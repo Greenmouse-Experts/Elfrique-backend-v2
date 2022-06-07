@@ -1,0 +1,270 @@
+const Proposal = require("../models").proposal;
+const Eventjob = require("../models").eventjob;
+const Event = require("../models").event;
+const User = require("../models").adminuser;
+const cloudinary = require("../helpers/cloudinary");
+
+exports.createProposal = async (req, res, next) => {
+  const { description, price } = req.body;
+  try {
+    await Proposal.findOne({
+      where: {
+        userId: req.user.id,
+        jobId: req.params.jobId,
+      },
+    }).then(async (proposal) => {
+      if (proposal) {
+        res.status(406).json({
+          status: true,
+          message: "Bid Created Already",
+        });
+      } else {
+        if (req.file) {
+          var result = await cloudinary.uploader.upload(req.file.path);
+          await Proposal.create({
+            userId: req.user.id,
+            jobId: req.params.jobId,
+            description,
+            price,
+            img_id: result.public_id,
+            img_url: result.secure_url,
+          });
+        } else {
+          await Proposal.create({
+            userId: req.user.id,
+            jobId: req.params.jobId,
+            description,
+            price,
+          });
+        }
+      }
+    });
+
+    var proposal = await Proposal.findOne({
+      where: {
+        userId: req.user.id,
+      },
+    });
+    return res.status(201).json({
+      status: true,
+      message: "Bid Successfully Created",
+      data: proposal,
+    });
+  } catch (error) {
+    console.error(error);
+    return next(error);
+  }
+};
+
+exports.getProposalUser = async (req, res, next) => {
+  try {
+    await Proposal.findAll({
+      where: {
+        jobId: req.params.jobId,
+        userId: req.user.id,
+      },
+      include: [
+        {
+          model: Eventjob,
+          include: [
+            {
+              model: Event,
+              include: [
+                {
+                  model: User,
+                  attributes: {
+                    exclude: ["createdAt", "updatedAt", "deletedAt"],
+                  },
+                },
+              ],
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "deletedAt"],
+              },
+            },
+          ],
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+        },
+      ],
+    }).then((proposal) => res.status(200).json(proposal));
+  } catch (error) {
+    console.error(error);
+    return next(error);
+  }
+};
+exports.getProposalSeller = async (req, res, next) => {
+  try {
+    await Proposal.findAll({
+      where: {
+        jobId: req.params.jobId,
+        userId: req.params.userId,
+      },
+      include: [
+        {
+          model: Eventjob,
+          include: [
+            {
+              model: Event,
+              include: [
+                {
+                  model: User,
+                  attributes: {
+                    exclude: ["createdAt", "updatedAt", "deletedAt"],
+                  },
+                },
+              ],
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "deletedAt"],
+              },
+            },
+          ],
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+        },
+      ],
+    }).then((proposal) => res.status(200).json(proposal));
+  } catch (error) {
+    console.error(error);
+    return next(error);
+  }
+};
+
+exports.getAllProposal = async (req, res, next) => {
+  try {
+    await Proposal.findAll({
+      where: {
+        jobId: req.params.jobId,
+      },
+      include: [
+        {
+          model: Eventjob,
+          include: [
+            {
+              model: Event,
+              include: [
+                {
+                  model: User,
+                  attributes: {
+                    exclude: ["createdAt", "updatedAt", "deletedAt"],
+                  },
+                },
+              ],
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "deletedAt"],
+              },
+            },
+          ],
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+        },
+      ],
+    }).then((proposal) => res.status(200).json(proposal));
+  } catch (error) {
+    console.error(error);
+    return next(error);
+  }
+};
+
+exports.updateProposal = async (req, res, next) => {
+  try {
+    await Proposal.findOne({
+      where: {
+        userId: req.user.id,
+        jobId: req.params.jobId,
+      },
+    }).then(async (proposal) => {
+      if (proposal) {
+        if (req.body) {
+          if (req.file) {
+            await Proposal.update(req.body, {
+              where: {
+                id: proposal.id,
+              },
+            });
+            await cloudinary.uploader.destroy(proposal.img_id);
+            const result = await cloudinary.uploader.upload(req.file.path);
+            await Proposal.update(
+              {
+                img_id: result.public_id,
+                img_url: result.secure_url,
+              },
+              {
+                where: {
+                  id: proposal.id,
+                },
+              }
+            );
+          } else {
+            await Proposal.update(req.body, {
+              where: {
+                id: proposal.id,
+              },
+            });
+          }
+        } else {
+          if (req.file) {
+            await cloudinary.uploader.destroy(proposal.img_id);
+            const result = await cloudinary.uploader.upload(req.file.path);
+            await Proposal.update(
+              {
+                img_id: result.public_id,
+                img_url: result.secure_url,
+              },
+              {
+                where: {
+                  id: proposal.id,
+                },
+              }
+            );
+          } else {
+            res.status(404).json({
+              status: false,
+              message: "Nothing to update",
+            });
+          }
+        }
+        const adsres = await Proposal.findOne({
+          where: {
+            JobId: req.params.JobId,
+            UserId: req.user.id,
+          },
+        });
+        res.status(200).json({
+          status: true,
+          message: "Bid Updated Successfully",
+          data: adsres,
+        });
+      } else {
+        res.status(404).json({
+          status: false,
+          message: "Bid not found",
+        });
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    return next(error);
+  }
+};
+
+exports.deleteProposal = async (req, res, next) => {
+  try {
+    await Proposal.destroy({
+      where: {
+        jobId: req.params.jobId,
+        userId: req.user.id,
+      },
+    }).then((proposal) =>
+      res.status(200).json({
+        status: true,
+        message: "Bid Deleted Successfully",
+      })
+    );
+  } catch (error) {
+    console.error(error);
+    return next(error);
+  }
+};
