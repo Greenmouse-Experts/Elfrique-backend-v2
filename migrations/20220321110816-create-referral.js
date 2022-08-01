@@ -4,13 +4,13 @@ module.exports = {
     await queryInterface.createTable("referrals", {
       id: {
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV1,
+        type: Sequelize.STRING,
       },
       referral_id: {
         allowNull: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references: {
           model: "adminusers",
           key: "id",
@@ -19,7 +19,7 @@ module.exports = {
       },
       user_id: {
         allowNull: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references: {
           model: "adminusers",
           key: "id",

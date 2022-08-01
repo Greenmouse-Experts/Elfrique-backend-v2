@@ -10,10 +10,10 @@ module.exports = {
         primaryKey: true,
       },
       senderId:{
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       receiverId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       message: {
         allowNull: true,

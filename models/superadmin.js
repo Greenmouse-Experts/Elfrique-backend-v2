@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const {nanoid} = require("nanoid");
 module.exports = (sequelize, DataTypes) => {
   class superadmin extends Model {
     /**
@@ -14,6 +15,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   superadmin.init({
+    id: {
+      type: DataTypes.STRING(10),
+      autoincrement: false,
+      allowNull: false,
+      primaryKey: true,
+      defaultValue: () => nanoid(10)
+  },
     email: DataTypes.STRING,
     password: DataTypes.STRING
   }, {

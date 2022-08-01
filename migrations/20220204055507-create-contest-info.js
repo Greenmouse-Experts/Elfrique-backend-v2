@@ -3,16 +3,16 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("contestInfos", {
       id: {
-        allowNull: true,
+        allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV1,
+        type: Sequelize.STRING,
       },
       details: {
         type: Sequelize.TEXT,
       },
       votingContestId: {
-        type: Sequelize.UUID,
+        type: Sequelize.STRING,
         references: {
           model: "votingContests",
           key: "id",
@@ -20,7 +20,7 @@ module.exports = {
         onDelete: "CASCADE",
       },
       awardContestId: {
-        type: Sequelize.UUID,
+        type: Sequelize.STRING,
         references: {
           model: "awardContests",
           key: "id",

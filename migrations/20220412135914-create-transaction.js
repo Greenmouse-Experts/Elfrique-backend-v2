@@ -4,9 +4,9 @@ module.exports = {
     await queryInterface.createTable("transactions", {
       id: {
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV1,
+        type: Sequelize.STRING,
       },
       payer_name: {
         allowNull: false,

@@ -36,6 +36,7 @@ const server = http.createServer(app);
 let users = [];
 
 // middlewares
+app.use('/images', express.static('images'));
 app.use(cors());
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");

@@ -10,7 +10,7 @@ module.exports = {
           primaryKey: true,
       },
       eventId:{
-          type: Sequelize.INTEGER,
+          type: Sequelize.STRING,
           references:{ 
               model: 'events',
               key: 'id',
@@ -33,7 +33,7 @@ module.exports = {
           defaultValue: false
       },
       userassignId: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.STRING,
           references:{ 
               model: 'adminusers',
               key: 'id',
@@ -60,7 +60,7 @@ module.exports = {
      * Add altering commands here.
      *
      * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
+     * await queryInterface.createTable('users', { id: Sequelize.STRING });
      */
   },
 

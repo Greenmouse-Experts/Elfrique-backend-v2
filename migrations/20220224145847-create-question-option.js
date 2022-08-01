@@ -6,10 +6,10 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       questionId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references: {
           model: "questions",
           key: "id",
@@ -18,7 +18,7 @@ module.exports = {
         onUpdate: "CASCADE",
       },
       triviaId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references: {
           model: "trivia",
           key: "id",

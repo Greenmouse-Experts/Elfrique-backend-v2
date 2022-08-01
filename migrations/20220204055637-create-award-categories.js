@@ -3,10 +3,10 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("awardCategories", {
       id: {
-        allowNull: true,
+        allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV1,
+        type: Sequelize.STRING,
       },
       name: {
         type: Sequelize.STRING,
@@ -15,7 +15,7 @@ module.exports = {
         type: Sequelize.TEXT,
       },
       awardContestId: {
-        type: Sequelize.UUID,
+        type: Sequelize.STRING,
         references: {
           model: "awardContests",
           key: "id",

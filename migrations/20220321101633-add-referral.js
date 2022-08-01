@@ -24,7 +24,7 @@ module.exports = {
           "referral_id",
           {
             allowNull: true,
-            type: Sequelize.INTEGER,
+            type: Sequelize.STRING,
           },
           { transaction: t }
         ),

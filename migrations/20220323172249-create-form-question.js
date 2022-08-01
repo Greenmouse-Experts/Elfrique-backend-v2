@@ -4,9 +4,9 @@ module.exports = {
     await queryInterface.createTable("formQuestions", {
       id: {
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV1,
+        type: Sequelize.STRING,
       },
       type: {
         allowNull: false,
@@ -18,7 +18,7 @@ module.exports = {
       },
       eventformId: {
         allowNull: true,
-        type: Sequelize.UUID,
+        type: Sequelize.STRING,
         references: {
           model: "eventforms",
           key: "id",

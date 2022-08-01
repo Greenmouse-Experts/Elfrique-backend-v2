@@ -6,7 +6,7 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       title: {
         type: Sequelize.STRING,
@@ -48,7 +48,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       adminuserId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references: {
           model: "adminusers",
           key: "id",

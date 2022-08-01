@@ -3,10 +3,10 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("votingContests", {
       id: {
-        allowNull: true,
+        allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV1,
+        type: Sequelize.STRING,
       },
       title: {
         type: Sequelize.STRING,
@@ -39,7 +39,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       adminuserId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references: {
           model: "adminusers",
           key: "id",

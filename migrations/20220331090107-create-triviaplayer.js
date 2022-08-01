@@ -4,13 +4,13 @@ module.exports = {
     await queryInterface.createTable("triviaplayers", {
       id: {
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV1,
+        type: Sequelize.STRING,
       },
       triviaId: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         reference: {
           model: "trivia",
           key: "id",

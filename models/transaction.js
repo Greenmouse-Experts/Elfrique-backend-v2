@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const {nanoid} = require("nanoid");
 module.exports = (sequelize, DataTypes) => {
   class transaction extends Model {
     /**
@@ -14,11 +15,12 @@ module.exports = (sequelize, DataTypes) => {
   transaction.init(
     {
       id: {
+        type: DataTypes.STRING(10),
+        autoincrement: false,
         allowNull: false,
         primaryKey: true,
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV1,
-      },
+        defaultValue: () => nanoid(10)
+    },
       admin_id: {
         allowNull: false,
         type: DataTypes.STRING,

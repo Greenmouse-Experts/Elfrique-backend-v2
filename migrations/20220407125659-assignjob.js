@@ -17,7 +17,7 @@ module.exports = {
           }
       },
       userId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references:{ 
             model: 'adminusers',
             key: 'id',

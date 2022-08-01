@@ -18,7 +18,7 @@ module.exports = {
           
       },
         sender: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.STRING,
           references:{ 
             model: 'adminusers',
             key: 'id',

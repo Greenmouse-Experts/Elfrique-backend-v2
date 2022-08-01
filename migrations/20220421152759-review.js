@@ -17,14 +17,14 @@ module.exports = {
         }
       },
       from: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.STRING,
           references:{ 
               model: 'adminusers',
               key: 'id',
           }
       },
       to:  {
-          type: Sequelize.INTEGER,
+          type: Sequelize.STRING,
           references:{ 
               model: 'adminusers',
               key: 'id',

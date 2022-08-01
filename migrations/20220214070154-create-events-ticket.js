@@ -6,7 +6,7 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       name: {
         type: Sequelize.STRING,
@@ -30,7 +30,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       eventId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references: {
           model: "events",
           key: "id",
