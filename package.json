@@ -1,0 +1,10 @@
+{
+  "name": "Elfrique_Backend_v2",
+  "version": "1.0.0",
+  "description": "NodeJs backend for elfrique.com website",
+  "main": "index.js",
+  "repository": "https://github.com/Greenmouse-Experts/Elfrique-backend-v2",
+  "author": "Radi",
+  "license": "MIT",
+  "private": null
+}
