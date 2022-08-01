@@ -88,25 +88,40 @@ exports.getAllAwardsContest = async (req, res) => {
 
 exports.getSingleAwardContest = async (req, res) => {
   try {
-    const adminuserId = req.user.id;
-    const profile = await Profile.findOne({
-      where: { adminuserId },
+    const awards = await awardContest.findOne({
+      where: { id: req.params.id },
       include: [
+        {
+          model: awardCategories,
+          include: [
+            {
+              model: awardNominees,
+              as: "nominees",
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "deletedAt"],
+              },
+            },
+          ],
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+        },
+
         {
           model: User,
           attributes: {
             exclude: ["password", "createdAt", "updatedAt", "deletedAt"],
           },
+          include: [
+            {
+              model: Profile,
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "deletedAt"],
+              },
+            },
+          ],
         },
       ],
-    });
-    if (!profile) {
-      return res.status(404).send({
-        message: "User not found",
-      });
-    }
-    const awards = await awardContest.findOne({
-      where: { id: req.params.id },
     });
     return res.status(200).send({
       awards,
@@ -220,6 +235,7 @@ exports.createAwardCategories = async (req, res) => {
       });
     }
     req.body.awardContestId = awards.id;
+
     const Categories = await awardCategories.create(req.body);
     return res.status(200).send({
       Categories,
@@ -231,23 +247,6 @@ exports.createAwardCategories = async (req, res) => {
 };
 exports.getAllAwardCategories = async (req, res) => {
   try {
-    const adminuserId = req.user.id;
-    const profile = await Profile.findOne({
-      where: { adminuserId },
-      include: [
-        {
-          model: User,
-          attributes: {
-            exclude: ["password", "createdAt", "updatedAt", "deletedAt"],
-          },
-        },
-      ],
-    });
-    if (!profile) {
-      return res.status(404).send({
-        message: "User not found",
-      });
-    }
     const awards = await awardContest.findOne({
       where: { id: req.params.id },
     });
@@ -258,6 +257,15 @@ exports.getAllAwardCategories = async (req, res) => {
     }
     const Categories = await awardCategories.findAll({
       where: { awardContestId: awards.id },
+      include: [
+        {
+          model: awardNominees,
+          as: "nominees",
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+        },
+      ],
     });
     return res.status(200).send({
       Categories,
@@ -270,33 +278,37 @@ exports.getAllAwardCategories = async (req, res) => {
 
 exports.getSingleCategory = async (req, res) => {
   try {
-    const adminuserId = req.user.id;
-    const profile = await Profile.findOne({
-      where: { adminuserId },
-      include: [
-        {
-          model: User,
-          attributes: {
-            exclude: ["password", "createdAt", "updatedAt", "deletedAt"],
-          },
-        },
-      ],
-    });
-    if (!profile) {
-      return res.status(404).send({
-        message: "User not found",
-      });
-    }
-    const awards = await awardContest.findOne({
-      where: { title: req.params.title },
-    });
-    if (!awards) {
-      return res.status(404).send({
-        message: "AwardContest not found",
-      });
-    }
     const Categories = await awardCategories.findOne({
       where: { id: req.params.id },
+      include: [
+        {
+          model: awardNominees,
+          as: "nominees",
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+        },
+        {
+          model: awardContest,
+          attributes: { exclude: ["createdAt", "updatedAt", "deletedAt"] },
+          include: [
+            {
+              model: User,
+              attributes: {
+                exclude: ["password", "createdAt", "updatedAt", "deletedAt"],
+              },
+              include: [
+                {
+                  model: Profile,
+                  attributes: {
+                    exclude: ["createdAt", "updatedAt", "deletedAt"],
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
     });
     return res.status(200).send({
       Categories,
@@ -350,6 +362,29 @@ exports.createAwardNominees = async (req, res) => {
     }
     req.body.awardCategoriesId = Categories.id; //check this
     const Nominees = await awardNominees.create(req.body);
+    return res.status(200).send({
+      Nominees,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server Error" });
+  }
+};
+
+exports.getSingleNominee = async (req, res) => {
+  try {
+    const Nominees = await awardNominees.findOne({
+      where: { id: req.params.id },
+      include: [
+        {
+          model: awardCategories,
+          as: "Categories",
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+        },
+      ],
+    });
     return res.status(200).send({
       Nominees,
     });

@@ -7,7 +7,7 @@ const db = new Sequelize(
   process.env.DB_USER,
   process.env.DB_PASSWORD,
   {
-    host: "us-cdbr-east-05.cleardb.net",
+    host: process.env.DB_HOST,
     dialect: "mysql",
     pool: {
       max: 5,

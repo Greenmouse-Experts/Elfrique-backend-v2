@@ -83,213 +83,270 @@ exports.registerUser = async (req, res, next) => {
         adminuserId: newUser.id,
       });
 
+      
+
       let user_email = newUser.email;
       let email_token = uniqueString();
-      const output = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-                <html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" style="width:100%;font-family:lato, 'helvetica neue', helvetica, arial, sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0">
-                <head>
-                <meta charset="UTF-8">
-                <meta content="width=device-width, initial-scale=1" name="viewport">
-                <meta name="x-apple-disable-message-reformatting">
-                <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                <meta content="telephone=no" name="format-detection">
-                <title>New email template 2021-04-12</title>
-                <!--[if (mso 16)]>
-                <style type="text/css">
-                a {text-decoration: none;}
-                </style>
-                <![endif]-->
-                <!--[if gte mso 9]><style>sup { font-size: 100% !important; }</style><![endif]-->
-                <!--[if gte mso 9]>
-                <xml>
-                <o:OfficeDocumentSettings>
-                <o:AllowPNG></o:AllowPNG>
-                <o:PixelsPerInch>96</o:PixelsPerInch>
-                </o:OfficeDocumentSettings>
-                </xml>
-                <![endif]-->
-                <!--[if !mso]><!-- -->
-                <link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i" rel="stylesheet">
-                <!--<![endif]-->
-                <style type="text/css">
-                #outlook a {
-                padding:0;
-                }
-                .ExternalClass {
-                width:100%;
-                }
-                .ExternalClass,
-                .ExternalClass p,
-                .ExternalClass span,
-                .ExternalClass font,
-                .ExternalClass td,
-                .ExternalClass div {
-                line-height:100%;
-                }
-                .es-button {
-                mso-style-priority:100!important;
-                text-decoration:none!important;
-                }
-                a[x-apple-data-detectors] {
-                color:inherit!important;
-                text-decoration:none!important;
-                font-size:inherit!important;
-                font-family:inherit!important;
-                font-weight:inherit!important;
-                line-height:inherit!important;
-                }
-                .es-desk-hidden {
-                display:none;
-                float:left;
-                overflow:hidden;
-                width:0;
-                max-height:0;
-                line-height:0;
-                mso-hide:all;
-                }
-                @media only screen and (max-width:600px) {p, ul li, ol li, a { line-height:150%!important } h1 { font-size:30px!important; text-align:center; line-height:120%!important } h2 { font-size:26px!important; text-align:center; line-height:120%!important } h3 { font-size:20px!important; text-align:center; line-height:120%!important } .es-header-body h1 a, .es-content-body h1 a, .es-footer-body h1 a { font-size:30px!important } .es-header-body h2 a, .es-content-body h2 a, .es-footer-body h2 a { font-size:26px!important } .es-header-body h3 a, .es-content-body h3 a, .es-footer-body h3 a { font-size:20px!important } .es-menu td a { font-size:16px!important } .es-header-body p, .es-header-body ul li, .es-header-body ol li, .es-header-body a { font-size:16px!important } .es-content-body p, .es-content-body ul li, .es-content-body ol li, .es-content-body a { font-size:16px!important } .es-footer-body p, .es-footer-body ul li, .es-footer-body ol li, .es-footer-body a { font-size:16px!important } .es-infoblock p, .es-infoblock ul li, .es-infoblock ol li, .es-infoblock a { font-size:12px!important } *[class="gmail-fix"] { display:none!important } .es-m-txt-c, .es-m-txt-c h1, .es-m-txt-c h2, .es-m-txt-c h3 { text-align:center!important } .es-m-txt-r, .es-m-txt-r h1, .es-m-txt-r h2, .es-m-txt-r h3 { text-align:right!important } .es-m-txt-l, .es-m-txt-l h1, .es-m-txt-l h2, .es-m-txt-l h3 { text-align:left!important } .es-m-txt-r img, .es-m-txt-c img, .es-m-txt-l img { display:inline!important } .es-button-border { display:block!important } a.es-button, button.es-button { font-size:20px!important; display:block!important; border-width:15px 25px 15px 25px!important } .es-btn-fw { border-width:10px 0px!important; text-align:center!important } .es-adaptive table, .es-btn-fw, .es-btn-fw-brdr, .es-left, .es-right { width:100%!important } .es-content table, .es-header table, .es-footer table, .es-content, .es-footer, .es-header { width:100%!important; max-width:600px!important } .es-adapt-td { display:block!important; width:100%!important } .adapt-img { width:100%!important; height:auto!important } .es-m-p0 { padding:0px!important } .es-m-p0r { padding-right:0px!important } .es-m-p0l { padding-left:0px!important } .es-m-p0t { padding-top:0px!important } .es-m-p0b { padding-bottom:0!important } .es-m-p20b { padding-bottom:20px!important } .es-mobile-hidden, .es-hidden { display:none!important } tr.es-desk-hidden, td.es-desk-hidden, table.es-desk-hidden { width:auto!important; overflow:visible!important; float:none!important; max-height:inherit!important; line-height:inherit!important } tr.es-desk-hidden { display:table-row!important } table.es-desk-hidden { display:table!important } td.es-desk-menu-hidden { display:table-cell!important } .es-menu td { width:1%!important } table.es-table-not-adapt, .esd-block-html table { width:auto!important } table.es-social { display:inline-block!important } table.es-social td { display:inline-block!important } }
-                </style>
-                </head>
-                <body style="width:100%;font-family:lato, 'helvetica neue', helvetica, arial, sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0">
-                <div class="es-wrapper-color" style="background-color:#F4F4F4">
-                <!--[if gte mso 9]>
-                <v:background xmlns:v="urn:schemas-microsoft-com:vml" fill="t">
-                <v:fill type="tile" color="#f4f4f4"></v:fill>
-                </v:background>
-                <![endif]-->
-                <table class="es-wrapper" width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;padding:0;Margin:0;width:100%;height:100%;background-repeat:repeat;background-position:center top">
-                <tr class="gmail-fix" height="0" style="border-collapse:collapse">
-                <td style="padding:0;Margin:0">
-                <table cellspacing="0" cellpadding="0" border="0" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:500px">
-                <tr style="border-collapse:collapse">
-                <td cellpadding="0" cellspacing="0" border="0" style="padding:0;Margin:0;line-height:1px;min-width:500px" height="0"><img src="https://retfbx.stripocdn.email/content/guids/CABINET_837dc1d79e3a5eca5eb1609bfe9fd374/images/41521605538834349.png" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;max-height:0px;min-height:0px;min-width:500px;width:500px" alt width="500" height="1"></td>
-                </tr>
-                </table></td>
-                </tr>
-                <tr style="border-collapse:collapse">
-                <td valign="top" style="padding:0;Margin:0">
-                <table class="es-header" cellspacing="0" cellpadding="0" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;background-color:#FFA73B;background-repeat:repeat;background-position:center top">
-                <tr style="border-collapse:collapse">
-                <td align="center" style="padding:0;Margin:0">
-                <table class="es-header-body" cellspacing="0" cellpadding="0" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:transparent;width:500px">
-                <tr style="border-collapse:collapse">
-                <td align="left" style="Margin:0;padding-bottom:10px;padding-left:10px;padding-right:10px;padding-top:20px">
-                <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                <tr style="border-collapse:collapse">
-                <td valign="top" align="center" style="padding:0;Margin:0;width:480px">
-                <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-  
-                </table></td>
-                </tr>
-                </table></td>
-                </tr>
-                </table></td>
-                </tr>
-                </table>
-                <table class="es-content" cellspacing="0" cellpadding="0" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%">
-                <tr style="border-collapse:collapse">
-                <td style="padding:0;Margin:0;background-color:#FFA73B" bgcolor="#ffa73b" align="center">
-                <table class="es-content-body" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:transparent;width:500px" cellspacing="0" cellpadding="0" align="center">
-                <tr style="border-collapse:collapse">
-                <td align="left" style="padding:0;Margin:0">
-                <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                <tr style="border-collapse:collapse">
-                <td valign="top" align="center" style="padding:0;Margin:0;width:500px">
-                <table style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:separate;border-spacing:0px;background-color:#FFFFFF;border-radius:4px" width="100%" cellspacing="0" cellpadding="0" bgcolor="#ffffff" role="presentation">
-                <tr style="border-collapse:collapse">
-                <td align="center" style="Margin:0;padding-bottom:5px;padding-left:30px;padding-right:30px;padding-top:35px"><h1 style="Margin:0;line-height:58px;mso-line-height-rule:exactly;font-family:lato, 'helvetica neue', helvetica, arial, sans-serif;font-size:48px;font-style:normal;font-weight:normal;color:#111111">Welcome!</h1></td>
-                </tr>
-                <tr style="border-collapse:collapse">
-                <td bgcolor="#ffffff" align="center" style="Margin:0;padding-top:5px;padding-bottom:5px;padding-left:20px;padding-right:20px;font-size:0">
-                <table width="100%" height="100%" cellspacing="0" cellpadding="0" border="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                <tr style="border-collapse:collapse">
-                <td style="padding:0;Margin:0;border-bottom:1px solid #FFFFFF;background:#FFFFFF none repeat scroll 0% 0%;height:1px;width:100%;margin:0px"></td>
-                </tr>
-                </table></td>
-                </tr>
-                </table></td>
-                </tr>
-                </table></td>
-                </tr>
-                </table></td>
-                </tr>
-                </table>
-                <table class="es-content" cellspacing="0" cellpadding="0" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%">
-                <tr style="border-collapse:collapse">
-                <td align="center" style="padding:0;Margin:0">
-                <table class="es-content-body" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:transparent;width:500px" cellspacing="0" cellpadding="0" align="center">
-                <tr style="border-collapse:collapse">
-                <td align="left" style="padding:0;Margin:0">
-                <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                <tr style="border-collapse:collapse">
-                <td valign="top" align="center" style="padding:0;Margin:0;width:500px">
-                <table style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:separate;border-spacing:0px;border-radius:4px;background-color:#FFFFFF" width="100%" cellspacing="0" cellpadding="0" bgcolor="#ffffff" role="presentation">
-                <tr style="border-collapse:collapse">
-                <td class="es-m-txt-l" bgcolor="#ffffff" align="left" style="Margin:0;padding-top:20px;padding-bottom:20px;padding-left:30px;padding-right:30px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:lato, 'helvetica neue', helvetica, arial, sans-serif;line-height:27px;color:#666666;font-size:18px">Hi, <strong>${user_email}</strong><br>We're excited to have you get started. First, you need to activate&nbsp;your account. Just press the button below.</p></td>
-                </tr>
-                <tr style="border-collapse:collapse">
-                <td align="center" style="Margin:0;padding-left:10px;padding-right:10px;padding-top:35px;padding-bottom:35px"><span class="es-button-border" style="border-style:solid;border-color:#FFA73B;background:1px;border-width:1px;display:inline-block;border-radius:2px;width:auto"><a href="${process.env.SITE_URL}/verify?email=${user_email}&token=${email_token}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:20px;border-style:solid;border-color:#FFA73B;border-width:15px 30px;display:inline-block;background:#FFA73B;border-radius:2px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-weight:normal;font-style:normal;line-height:24px;width:auto;text-align:center">Activate Account</a></span></td>
-                </tr>
-                <tr style="border-collapse:collapse">
-                <td class="es-m-txt-l" align="left" style="Margin:0;padding-top:20px;padding-left:30px;padding-right:30px;padding-bottom:40px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:lato, 'helvetica neue', helvetica, arial, sans-serif;line-height:27px;color:#666666;font-size:18px">Cheers,</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:lato, 'helvetica neue', helvetica, arial, sans-serif;line-height:27px;color:#666666;font-size:18px">The elfrique Team</p></td>
-                </tr>
-                </table></td>
-                </tr>
-                </table></td>
-                </tr>
-                </table></td>
-                </tr>
-                </table>
-                <table class="es-content" cellspacing="0" cellpadding="0" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%">
-                <tr style="border-collapse:collapse">
-                <td align="center" style="padding:0;Margin:0">
-                <table class="es-content-body" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:transparent;width:500px" cellspacing="0" cellpadding="0" align="center">
-                <tr style="border-collapse:collapse">
-                <td align="left" style="padding:0;Margin:0">
-                <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                <tr style="border-collapse:collapse">
-                <td valign="top" align="center" style="padding:0;Margin:0;width:500px">
-                <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                <tr style="border-collapse:collapse">
-                <td align="center" style="Margin:0;padding-top:10px;padding-bottom:20px;padding-left:20px;padding-right:20px;font-size:0">
-                <table width="100%" height="100%" cellspacing="0" cellpadding="0" border="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                <tr style="border-collapse:collapse">
-                <td style="padding:0;Margin:0;border-bottom:1px solid #F4F4F4;background:#FFFFFF none repeat scroll 0% 0%;height:1px;width:100%;margin:0px"></td>
-                </tr>
-                </table></td>
-                </tr>
-                </table></td>
-                </tr>
-                </table></td>
-                </tr>
-                </table></td>
-                </tr>
-                </table>
-                <table class="es-content" cellspacing="0" cellpadding="0" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%">
-                <tr style="border-collapse:collapse">
-                <td align="center" style="padding:0;Margin:0">
-                <table class="es-content-body" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:transparent;width:500px" cellspacing="0" cellpadding="0" align="center">
-                <tr style="border-collapse:collapse">
-                <td align="left" style="Margin:0;padding-left:20px;padding-right:20px;padding-top:30px;padding-bottom:30px">
-                <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                <tr style="border-collapse:collapse">
-                <td valign="top" align="center" style="padding:0;Margin:0;width:460px">
-                <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                <tr style="border-collapse:collapse">
-               
-                </tr>
-                </table></td>
-                </tr>
-                </table></td>
-                </tr>
-                </table></td>
-                </tr>
-                </table></td>
-                </tr>
-                </table>
-                </div>
-                </body>
-                </html>`;
+      var link = `${process.env.SITE_URL}/verify?email=${user_email}&token=${email_token}`;
+      var fname = newUser.firstname;
+      var baseurl = process.env.BASEURL;
+      const output = `<!DOCTYPE html>
+                  <html>
+                  <head>
+                  
+                    <meta charset="utf-8">
+                    <meta http-equiv="x-ua-compatible" content="ie=edge">
+                    <title>Email Confirmation</title>
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                    <style type="text/css">
+                    /**
+                     * Google webfonts. Recommended to include the .woff version for cross-client compatibility.
+                     */
+                    @media screen {
+                      @font-face {
+                        font-family: 'Source Sans Pro';
+                        font-style: normal;
+                        font-weight: 400;
+                        src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v10/ODelI1aHBYDBqgeIAH2zlBM0YzuT7MdOe03otPbuUS0.woff) format('woff');
+                      }
+                      @font-face {
+                        font-family: 'Source Sans Pro';
+                        font-style: normal;
+                        font-weight: 700;
+                        src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'), url(https://fonts.gstatic.com/s/sourcesanspro/v10/toadOcfmlt9b38dHJxOBGFkQc6VGVFSmCnC_l7QZG60.woff) format('woff');
+                      }
+                    }
+                    /**
+                     * Avoid browser level font resizing.
+                     * 1. Windows Mobile
+                     * 2. iOS / OSX
+                     */
+                    body,
+                    table,
+                    td,
+                    a {
+                      -ms-text-size-adjust: 100%; /* 1 */
+                      -webkit-text-size-adjust: 100%; /* 2 */
+                    }
+                    /**
+                     * Remove extra space added to tables and cells in Outlook.
+                     */
+                    table,
+                    td {
+                      mso-table-rspace: 0pt;
+                      mso-table-lspace: 0pt;
+                    }
+                    /**
+                     * Better fluid images in Internet Explorer.
+                     */
+                    img {
+                      -ms-interpolation-mode: bicubic;
+                    }
+                    /**
+                     * Remove blue links for iOS devices.
+                     */
+                    a[x-apple-data-detectors] {
+                      font-family: inherit !important;
+                      font-size: inherit !important;
+                      font-weight: inherit !important;
+                      line-height: inherit !important;
+                      color: inherit !important;
+                      text-decoration: none !important;
+                    }
+                    /**
+                     * Fix centering issues in Android 4.4.
+                     */
+                    div[style*="margin: 16px 0;"] {
+                      margin: 0 !important;
+                    }
+                    body {
+                      width: 100% !important;
+                      height: 100% !important;
+                      padding: 0 !important;
+                      margin: 0 !important;
+                    }
+                    /**
+                     * Collapse table borders to avoid space between cells.
+                     */
+                    table {
+                      border-collapse: collapse !important;
+                    }
+                    a {
+                      color: #1a82e2;
+                    }
+                    img {
+                      height: auto;
+                      line-height: 100%;
+                      text-decoration: none;
+                      border: 0;
+                      outline: none;
+                    }
+                    </style>
+                  
+                  </head>
+                  <body style="background-color: #e9ecef;">
+                  
+                    <!-- start preheader -->
+                    <div class="preheader" style="display: none; max-width: 0; max-height: 0; overflow: hidden; font-size: 1px; line-height: 1px; color: #fff; opacity: 0;">
+                      Elfrique Email Verification
+                    </div>
+                    <!-- end preheader -->
+                  
+                    <!-- start body -->
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                  
+                      <!-- start logo -->
+                      <tr>
+                        <td align="center" bgcolor="#e9ecef">
+                          <!--[if (gte mso 9)|(IE)]>
+                          <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+                          <tr>
+                          <td align="center" valign="top" width="600">
+                          <![endif]-->
+                          <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                            <tr>
+                              <td align="center" valign="top" style="padding: 36px 24px;">
+                                <a href=${process.env.FRONTURL} target="_blank" style="display: inline-block;">
+                                  <img src=${baseurl}/images/logo.png alt="Logo" border="0" width="60" style="display: flex; width: 75px; max-width: 80px; min-width: 60px;">
+                                </a>
+                              </td>
+                            </tr>
+                          </table>
+                          <!--[if (gte mso 9)|(IE)]>
+                          </td>
+                          </tr>
+                          </table>
+                          <![endif]-->
+                        </td>
+                      </tr>
+                      <!-- end logo -->
+                  
+                      <!-- start hero -->
+                      <tr>
+                        <td align="center" bgcolor="#e9ecef">
+                          <!--[if (gte mso 9)|(IE)]>
+                          <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+                          <tr>
+                          <td align="center" valign="top" width="600">
+                          <![endif]-->
+                          <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                            <tr>
+                              <td align="left" bgcolor="#ffffff" style="padding: 36px 24px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
+                                <h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">Confirm Your Email Address</h1>
+                              </td>
+                            </tr>
+                          </table>
+                          <!--[if (gte mso 9)|(IE)]>
+                          </td>
+                          </tr>
+                          </table>
+                          <![endif]-->
+                        </td>
+                      </tr>
+                      <!-- end hero -->
+                  
+                      <!-- start copy block -->
+                      <tr>
+                        <td align="center" bgcolor="#e9ecef">
+                          <!--[if (gte mso 9)|(IE)]>
+                          <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+                          <tr>
+                          <td align="center" valign="top" width="600">
+                          <![endif]-->
+                          <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                  
+                            <!-- start copy -->
+                            <tr>
+                              <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+                        <h2> Hi ${fname}, </h2>        
+                                <p style="margin: 0;">You Have Successfully created an account with Elfrique. Tap the button below to confirm your email address. If you didn't create an account with Elfrique, you can safely delete this emails.</p>
+                              </td>
+                            </tr>
+                            <!-- end copy -->
+                  
+                            <!-- start button -->
+                            <tr>
+                              <td align="left" bgcolor="#ffffff">
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                  <tr>
+                                    <td align="center" bgcolor="#ffffff" style="padding: 12px;">
+                                      <table border="0" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                          <td align="center" bgcolor="#90ee90" style="border-radius: 6px;">
+                                            <a href=${link} target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #000000; text-decoration: none; border-radius: 6px;">Activate Account</a>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                            <!-- end button -->
+                  
+                            <!-- start copy -->
+                            <tr>
+                              <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+                              <p style="margin: 0;">If that doesn't work, copy and paste the following link in your browser:</p>
+                              <br>
+                              <p style="margin: 0;"><a href=${link} target="_blank">${link}</a></p>
+                              <br>
+                              <p style="margin: 0;">Please Note: This link will expire in 24 Hours</p>
+                              </td>
+                            </tr>
+                            <!-- end copy -->
+                  
+                            <!-- start copy -->
+                            <tr>
+                              <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-bottom: 3px solid #d4dadf">
+                                <p style="margin: 0;">Cheers,<br> Elfrique Team</p>
+                              </td>
+                            </tr>
+                            <!-- end copy -->
+                  
+                          </table>
+                          <!--[if (gte mso 9)|(IE)]>
+                          </td>
+                          </tr>
+                          </table>
+                          <![endif]-->
+                        </td>
+                      </tr>
+                      <!-- end copy block -->
+                  
+                      <!-- start footer -->
+                      <tr>
+                        <td align="center" bgcolor="#e9ecef" style="padding: 24px;">
+                          <!--[if (gte mso 9)|(IE)]>
+                          <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+                          <tr>
+                          <td align="center" valign="top" width="600">
+                          <![endif]-->
+                          <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                  
+                            <!-- start permission -->
+                            <tr>
+                              <td align="center" bgcolor="#e9ecef" style="padding: 12px 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;">
+                                <p style="margin: 0;">You received this email because we received a request for signing up for your Elfrique account. If you didn't request signing up you can safely delete this email.</p>
+                              </td>
+                            </tr>
+                            <!-- end permission -->
+                  
+                          </table>
+                          <!--[if (gte mso 9)|(IE)]>
+                          </td>
+                          </tr>
+                          </table>
+                          <![endif]-->
+                        </td>
+                      </tr>
+                      <!-- end footer -->
+                  
+                    </table>
+                    <!-- end body -->
+                  
+                  </body>
+                  </html> `;
       let transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
         port: process.env.EMAIL_PORT,
@@ -404,16 +461,270 @@ exports.postresetlink = async (req, res, next) => {
       return res.status(400).send({ message: "User not found" });
     } else {
       const token = uniqueString();
-
-      const output = `<html>
-              <head>
-                <title>Reset Password link for elfrique account</title>
-              </head>
-              <body>
-              <p>You requested to change your password, please ignore If you didn't make the request</p>
-              <a style="width: 100px; background: #FFA73B; color: #fff; height: 50px; padding: 12px 20px; text-decoration: none; margin-top: 30px;" href='${process.env.SITE_URL}/api/v1/resetpassword?email=${email}&token=${token}'>RESET PASSWORD</a>
-              </body>
-        </html>`;
+      const link = `${process.env.SITE_URL}/api/v1/resetpassword?email=${email}&token=${token}`
+      const fname = user.firstname;
+      var baseurl = process.env.BASEURL;
+      const output = `
+              
+      <!DOCTYPE html>
+      <html>
+      <head>
+      
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Password Reset</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style type="text/css">
+        /**
+         * Google webfonts. Recommended to include the .woff version for cross-client compatibility.
+         */
+        @media screen {
+          @font-face {
+            font-family: 'Source Sans Pro';
+            font-style: normal;
+            font-weight: 400;
+            src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v10/ODelI1aHBYDBqgeIAH2zlBM0YzuT7MdOe03otPbuUS0.woff) format('woff');
+          }
+          @font-face {
+            font-family: 'Source Sans Pro';
+            font-style: normal;
+            font-weight: 700;
+            src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'), url(https://fonts.gstatic.com/s/sourcesanspro/v10/toadOcfmlt9b38dHJxOBGFkQc6VGVFSmCnC_l7QZG60.woff) format('woff');
+          }
+        }
+        /**
+         * Avoid browser level font resizing.
+         * 1. Windows Mobile
+         * 2. iOS / OSX
+         */
+        body,
+        table,
+        td,
+        a {
+          -ms-text-size-adjust: 100%; /* 1 */
+          -webkit-text-size-adjust: 100%; /* 2 */
+        }
+        /**
+         * Remove extra space added to tables and cells in Outlook.
+         */
+        table,
+        td {
+          mso-table-rspace: 0pt;
+          mso-table-lspace: 0pt;
+        }
+        /**
+         * Better fluid images in Internet Explorer.
+         */
+        img {
+          -ms-interpolation-mode: bicubic;
+        }
+        /**
+         * Remove blue links for iOS devices.
+         */
+        a[x-apple-data-detectors] {
+          font-family: inherit !important;
+          font-size: inherit !important;
+          font-weight: inherit !important;
+          line-height: inherit !important;
+          color: inherit !important;
+          text-decoration: none !important;
+        }
+        /**
+         * Fix centering issues in Android 4.4.
+         */
+        div[style*="margin: 16px 0;"] {
+          margin: 0 !important;
+        }
+        body {
+          width: 100% !important;
+          height: 100% !important;
+          padding: 0 !important;
+          margin: 0 !important;
+        }
+        /**
+         * Collapse table borders to avoid space between cells.
+         */
+        table {
+          border-collapse: collapse !important;
+        }
+        a {
+          color: #1a82e2;
+        }
+        img {
+          height: auto;
+          line-height: 100%;
+          text-decoration: none;
+          border: 0;
+          outline: none;
+        }
+        </style>
+      
+      </head>
+      <body style="background-color: #e9ecef;">
+      
+        <!-- start preheader -->
+        <div class="preheader" style="display: none; max-width: 0; max-height: 0; overflow: hidden; font-size: 1px; line-height: 1px; color: #fff; opacity: 0;">
+          Elfrique Password Reset
+        </div>
+        <!-- end preheader -->
+      
+        <!-- start body -->
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      
+          <!-- start logo -->
+          <tr>
+            <td align="center" bgcolor="#e9ecef">
+              <!--[if (gte mso 9)|(IE)]>
+              <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+              <tr>
+              <td align="center" valign="top" width="600">
+              <![endif]-->
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                <tr>
+                  <td align="center" valign="top" style="padding: 36px 24px;">
+                    <a href=${process.env.FRONTURL} target="_blank" style="display: inline-block;">
+                      <img src=${baseurl}/images/logo.png alt="Logo" border="0" width="60" style="display: flex; width: 75px; max-width: 80px; min-width: 60px;">
+                    </a>
+                  </td>
+                </tr>
+              </table>
+              <!--[if (gte mso 9)|(IE)]>
+              </td>
+              </tr>
+              </table>
+              <![endif]-->
+            </td>
+          </tr>
+          <!-- end logo -->
+      
+          <!-- start hero -->
+          <tr>
+            <td align="center" bgcolor="#e9ecef">
+              <!--[if (gte mso 9)|(IE)]>
+              <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+              <tr>
+              <td align="center" valign="top" width="600">
+              <![endif]-->
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                <tr>
+                  <td align="left" bgcolor="#ffffff" style="padding: 36px 24px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
+                    <h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">Reset Password</h1>
+                  </td>
+                </tr>
+              </table>
+              <!--[if (gte mso 9)|(IE)]>
+              </td>
+              </tr>
+              </table>
+              <![endif]-->
+            </td>
+          </tr>
+          <!-- end hero -->
+      
+          <!-- start copy block -->
+          <tr>
+            <td align="center" bgcolor="#e9ecef">
+              <!--[if (gte mso 9)|(IE)]>
+              <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+              <tr>
+              <td align="center" valign="top" width="600">
+              <![endif]-->
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+      
+                <!-- start copy -->
+                <tr>
+                  <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+            <h2> Hi ${fname}, </h2>        
+                    <p style="margin: 0;"> Somebody requested a new password for the Elfrique account associated with ${user.email}. No changes have been made to your account yet. If you didn't request for password reset from your account with Elfrique, you can safely delete this email.</p>
+                    <p style="margin: 0;"> You can reset your password by clicking the link below: </p>
+                  </td>
+                </tr>
+                <!-- end copy -->
+      
+                <!-- start button -->
+                <tr>
+                  <td align="left" bgcolor="#ffffff">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                      <tr>
+                        <td align="center" bgcolor="#ffffff" style="padding: 12px;">
+                          <table border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td align="center" bgcolor="#90ee90" style="border-radius: 6px;">
+                                <a href=${link} target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #000000; text-decoration: none; border-radius: 6px;">Reset Password</a>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <!-- end button -->
+      
+                <!-- start copy -->
+                <tr>
+                  <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
+                  <p style="margin: 0;">If that doesn't work, copy and paste the following link in your browser:</p>
+                  <br>
+                  <p style="margin: 0;"><a href=${link} target="_blank">${link}</a></p>
+                  <br>
+                  <p style="margin: 0;">Please Note: This link will expire in 24 hours</p>
+                    </td>
+                </tr>
+                <!-- end copy -->
+      
+                <!-- start copy -->
+                <tr>
+                  <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-bottom: 3px solid #d4dadf">
+                    <p style="margin: 0;">Cheers,<br> Elfrique Team</p>
+                  </td>
+                </tr>
+                <!-- end copy -->
+      
+              </table>
+              <!--[if (gte mso 9)|(IE)]>
+              </td>
+              </tr>
+              </table>
+              <![endif]-->
+            </td>
+          </tr>
+          <!-- end copy block -->
+      
+          <!-- start footer -->
+          <tr>
+            <td align="center" bgcolor="#e9ecef" style="padding: 24px;">
+              <!--[if (gte mso 9)|(IE)]>
+              <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+              <tr>
+              <td align="center" valign="top" width="600">
+              <![endif]-->
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+      
+                <!-- start permission -->
+                <tr>
+                  <td align="center" bgcolor="#e9ecef" style="padding: 12px 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;">
+                    <p style="margin: 0;">You received this email because we received a request for password reset for your Elfrique account. If you didn't request signing up you can safely delete this email.</p>
+                  </td>
+                </tr>
+                <!-- end permission -->
+      
+              </table>
+              <!--[if (gte mso 9)|(IE)]>
+              </td>
+              </tr>
+              </table>
+              <![endif]-->
+            </td>
+          </tr>
+          <!-- end footer -->
+      
+        </table>
+        <!-- end body -->
+      
+      </body>
+      </html>
+      `;
 
       let transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,

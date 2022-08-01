@@ -26,16 +26,24 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: () => nanoid(10)
         },
         title:{
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: true,
+            defaultValue: null
         },
         ref_link:{
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: true,
+            defaultValue: null
         },
         img_id:{
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: true,
+            defaultValue: null
         },
         img_url:{
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            allowNull: true,
+            defaultValue: null
         }
     },
     {

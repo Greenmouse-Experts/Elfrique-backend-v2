@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
            
        },
        sender: {
-           type: DataTypes.INTEGER,
+           type: DataTypes.STRING,
            references:{ 
             model: 'adminusers',
             key: 'id',

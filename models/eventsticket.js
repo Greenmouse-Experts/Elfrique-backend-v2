@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const {nanoid} = require("nanoid");
 module.exports = (sequelize, DataTypes) => {
   class eventsTicket extends Model {
     /**
@@ -14,6 +15,13 @@ module.exports = (sequelize, DataTypes) => {
   }
   eventsTicket.init(
     {
+      id: {
+        type: DataTypes.STRING(10),
+        autoincrement: false,
+        allowNull: false,
+        primaryKey: true,
+        defaultValue: () => nanoid(10)
+    },
       name: DataTypes.STRING,
       quantity: DataTypes.STRING,
       price: DataTypes.STRING,

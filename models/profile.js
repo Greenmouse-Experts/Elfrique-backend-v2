@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const {nanoid} = require("nanoid");
 module.exports = (sequelize, DataTypes) => {
   class profile extends Model {
     /**
@@ -14,6 +15,13 @@ module.exports = (sequelize, DataTypes) => {
   }
   profile.init(
     {
+      id: {
+        type: DataTypes.STRING(10),
+        autoincrement: false,
+        allowNull: false,
+        primaryKey: true,
+        defaultValue: () => nanoid(10)
+    },
       firstname: DataTypes.STRING,
       lastname: DataTypes.STRING,
       phonenumber: DataTypes.STRING,
