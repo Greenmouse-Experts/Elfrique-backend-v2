@@ -1,13 +1,14 @@
 const old_db = require("./old_db.json");
 const { adminuser, profile, url, trivia } = require("../models");
 const generateUniqueId = require("generate-unique-id");
-const { none } = require("../helpers/upload");
 
 module.exports = (req, res) => {
   const text = "migrating...";
   res.send(text);
   console.log(text);
-  sync_urls();
+  // sync_admins_and_profiles()
+  // sync_urls();
+  sync_trivia();
 };
 
 const getItemsFromJson = (data, table) => {
@@ -79,6 +80,7 @@ const sync_urls = async () => {
   const old_urls = getItemsFromJson(old_db, "urls");
   const old_admins = getItemsFromJson(old_db, "organisers");
   old_urls.forEach(async (_url) => {
+    // Get admin id
     old_admins.forEach(async (_admin_) => {
       if (_admin_.id === _url.organiser_id) {
         const organiserEmail = _admin_.email;
@@ -106,18 +108,34 @@ const sync_urls = async () => {
 
 const sync_trivia = () => {
   ////ToDo: Sync date added and edited.
-  const old_trivia = getItemsFromJson(old_db, "trivia");
-  // const old_admins = getItemsFromJson(old_db, "organisers");
-  console.log(old_admins);
-  old_urls.forEach(async (_trivia) => {
-    const triviaData = {
-      title: _trivia.title,
-      image: _trivia.image,
-      details: _trivia.detail,
-      instruction: _trivia.instruction,
-      duration: _trivia.duration,
-      type: _trivia.type,
-      numberoftimes: _trivia.times_to_answer,
-    };
+  const old_trivia = getItemsFromJson(old_db, "trivia_details");
+  const old_admins = getItemsFromJson(old_db, "organisers");
+  old_trivia.forEach(async (_trivia) => {
+    // Get admin id
+    old_admins.forEach(async (_admin_) => {
+      if (_admin_.id === _trivia.organiser_id) {
+        const organiserEmail = _admin_.email;
+
+        const _user = await adminuser.findOne({
+          where: { email: organiserEmail },
+        });
+        //create
+        try {
+          const newTrivia = await trivia.create({
+            title: _trivia.title,
+            image: _trivia.image ? `/uploads/${_trivia.image}` : null,
+            details: _trivia.detail,
+            instruction: _trivia.instruction,
+            duration: _trivia.duration,
+            type: _trivia.type,
+            numberoftimes: _trivia.times_to_answer,
+            adminuserId: _user.id,
+          });
+          console.log("trivia created:", newTrivia.title);
+        } catch (error) {
+          console.log("failed to create url", _trivia.title); //error);
+        }
+      }
+    });
   });
 };
