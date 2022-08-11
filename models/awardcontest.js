@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const {nanoid} = require("nanoid");
 module.exports = (sequelize, DataTypes) => {
   class awardContest extends Model {
     /**
@@ -19,11 +20,12 @@ module.exports = (sequelize, DataTypes) => {
   awardContest.init(
     {
       id: {
-        allowNull: true,
+        type: DataTypes.STRING(10),
+        autoincrement: false,
+        allowNull: false,
         primaryKey: true,
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV1,
-      },
+        defaultValue: () => nanoid(10)
+    },
       title: DataTypes.STRING,
       type: DataTypes.STRING,
       votelimit: DataTypes.STRING,

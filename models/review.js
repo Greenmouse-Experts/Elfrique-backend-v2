@@ -39,14 +39,14 @@ module.exports = (sequelize, DataTypes) => {
         }
     },
     from: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         references:{ 
             model: 'adminusers',
             key: 'id',
         }
     },
     to:  {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         references:{ 
             model: 'adminusers',
             key: 'id',

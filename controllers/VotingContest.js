@@ -26,10 +26,10 @@ const upload = require("../helpers/upload");
 
 exports.createVoteContest = async (req, res) => {
   try {
-    // const result = await cloudinary.uploader.upload(req.file.path);
+    const result = await cloudinary.uploader.upload(req.file.path);
     const adminuserId = req.user.id;
     req.body.adminuserId = adminuserId;
-    // req.body.image = result.secure_url;
+    req.body.image = result.secure_url;
     const profile = await Profile.findOne({
       where: { adminuserId },
       include: [
@@ -449,7 +449,7 @@ exports.voteAContestant = async (req, res) => {
         message: "Your Vote has been Successfully Submitted",
         data: Contestant,
       });
-    } else if (type === "paid" && method === "paystack") {
+    } else if (type === "paid") {
       const checktxn = await Transaction.findOne({
         where: { reference },
       });
@@ -460,65 +460,21 @@ exports.voteAContestant = async (req, res) => {
           message: "Transaction Already Exist, cannot continue this operation",
         });
       }
-      const transaction = await Service.Paystack.verifyPayment(reference);
-      if (transaction.data.status === "success") {
-        const newtransaction = await Transaction.create({
-          payer_name: fullname,
-          email: transaction.data.customer.email,
-          category: "voting",
-          reference: transaction.data.reference,
-          amount: amount,
-          method: "paystack",
-          phone_no: transaction.data.customer.phone,
-          type: "paid",
-          product_title: Contestant.votingContest.title,
-        });
+      else{
         await Contestant.increment("voteCount", { by: Number(numberOfVote) });
         return res.status(200).send({
           status: true,
           message:
             "Payment Successful and Your Vote has been Successfully Submitted",
-          data: Contestant,
-          newtransaction,
+          data: Contestant
         });
-      } else {
-        res.status(200).json({
+        /* res.status(200).json({
           status: "error",
           message: "Transaction was not successful",
           transaction,
-        });
-      }
-    } else if (type === "paid" && method === "flutterwave") {
-      const transaction = await Service.Flutterwave.verifyPayment(reference);
-      if (transaction.data.status === "success") {
-        const { amount, currency, reference, status } = transaction.data;
-        const transaction = await Transaction.create({
-          payer_name: transaction.data.customer.customer_name,
-          email: transaction.data.customer.customer_email,
-          category: transaction.data.customer.customer_category,
-          reference: transaction.data.reference,
-          amount: amount,
-          method: "flutterwave",
-          phone_no: transaction.data.customer.customer_phone,
-          type: "paid",
-          product_title: transaction.data.metadata.product_title,
-        });
-        await contestant.increment("votes", { by: Number(numberOfVote) });
-        return res.status(200).send({
-          status: true,
-          message:
-            "Payment Successful and Your Vote has been Successfully Submitted",
-          data: contestant,
-          transaction,
-        });
-      } else {
-        res.status(200).json({
-          status: "error",
-          message: "Transaction was not successful",
-          transaction,
-        });
-      }
-    }
+        }); */
+      } 
+    } 
   } catch (error) {
     console.log(error);
     return res.status(500).send({ message: "Server Error" });

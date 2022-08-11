@@ -15,12 +15,14 @@ const sponsors = require("../models").sponsors;
 const contestInfo = require("../models").contestInfo;
 const awardContest = require("../models").awardContest;
 const Transaction = require("../models").transaction;
+const Ticket = require("../models").eventsTicket;
 const { Service } = require("../service/payment");
 
 const excludeAtrrbutes = { exclude: ["createdAt", "updatedAt", "deletedAt"] };
 
 // imports initialization
 const { Op } = require("sequelize");
+const { request } = require("express");
 
 exports.verifyTransaction = async (req, res) => {
   try {
@@ -56,11 +58,46 @@ exports.makeTransaction = (req, res) => {
     category: req.body.category,
     reference: req.body.reference,
     amount: req.body.amount,
+    currency: request.body.currency,
     phone_no: req.body.phone_no,
     product_title: req.body.product_title,
     product_id: req.body.product_id,
     phone_no: req.body.phone_no,
   };
+
+  let ticketQuantity = req.body.ticketQuantity
+  console.log(ticketQuantity)
+
+
+  if (transaction.category == 'Event Ticket') {
+    ticketQuantity.forEach(
+      (data) => {
+        console.log(data);
+        console.log(res);
+        Ticket.findOne({
+          where: {
+            id: data.id
+          }
+        }).then(res => {
+          /* let quantity = res.quantity
+          let newQty = quantity - parseInt(data.quantity) */
+          //console.log(newQty);
+          Ticket.update(
+            { quantity: res.quantity - parseInt(data.quantity) },
+            { where: { id: data.id } }
+          )
+            .then(result =>
+              console.log('success')
+            )
+            .catch(err =>
+              console.log('error')
+            )
+        });
+
+
+      })
+
+  }
   Transaction.create(transaction)
     .then((data) => {
       res.send(data);
@@ -89,13 +126,14 @@ exports.transactionHistoryByUser = async (req, res) => {
       ],
     });
     if (!profile) {
+      console.log(profile);
       return res.status(404).send({
         message: "User not found",
       });
     }
     const transactions = await Transaction.findAll({
       where: {
-        email: profile.email,
+        admin_id: adminuserId,
       },
       attributes: { exclude: ["createdAt", "updatedAt", "deletedAt"] },
     });

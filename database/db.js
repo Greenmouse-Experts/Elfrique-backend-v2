@@ -1,12 +1,13 @@
 require("dotenv").config();
 const Sequelize = require("sequelize");
 
+
 const db = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
   process.env.DB_PASSWORD,
   {
-    host: process.env.HOST, //"us-cdbr-east-05.cleardb.net",
+    host: process.env.DB_HOST,
     dialect: "mysql",
     pool: {
       max: 5,
@@ -17,7 +18,6 @@ const db = new Sequelize(
     dialectOptions: {
       connectTimeout: 80000,
     },
-    logging: true,
   }
 );
 

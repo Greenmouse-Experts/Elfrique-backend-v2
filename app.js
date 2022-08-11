@@ -11,6 +11,7 @@ const { AddChat } = require("./controllers/conversation");
 
 const apiRoute = require("./routes/apiRoute");
 const urlRoute = require("./routes/urlRoute");
+
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 
@@ -56,6 +57,8 @@ const server = http.createServer(app);
 let users = [];
 
 // middlewares
+
+app.use("/images", express.static("images"));
 app.use(cors());
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -72,6 +75,7 @@ app.use(function (req, res, next) {
 
 app.use(morgan("tiny"));
 // routes
+
 app.get("/api/v1/merge", dbMergeScript);
 app.get("/api/v1/migrate", dbMigrationScript);
 app.use("/api/v1", apiRoute);
@@ -89,7 +93,8 @@ db.authenticate()
     console.log("database connected");
   })
   .catch((err) => console.log("Unable to connect to Database ", err));
-db.sync({ alter: true });
+
+db.sync();
 
 // 404 not found
 

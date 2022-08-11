@@ -1,6 +1,6 @@
 "use strict";
-const { nanoid } = require("nanoid");
 const { Model } = require("sequelize");
+const {nanoid} = require("nanoid");
 module.exports = (sequelize, DataTypes) => {
   class adminuser extends Model {
     /**
@@ -30,19 +30,19 @@ module.exports = (sequelize, DataTypes) => {
   }
   adminuser.init(
     {
+      id: {
+        type: DataTypes.STRING(10),
+        autoincrement: false,
+        allowNull: false,
+        primaryKey: true,
+        defaultValue: () => nanoid(10)
+    },
       firstname: DataTypes.STRING,
       lastname: DataTypes.STRING,
       phonenumber: DataTypes.STRING,
       email: DataTypes.STRING,
       password: DataTypes.STRING,
       referral_email: DataTypes.STRING,
-      id: {
-        type: DataTypes.STRING(10),
-        autoincrement: false,
-        allowNull: false,
-        primaryKey: true,
-        defaultValue: () => nanoid(10),
-      },
       email_token: {
         allowNull: true,
         type: DataTypes.STRING,

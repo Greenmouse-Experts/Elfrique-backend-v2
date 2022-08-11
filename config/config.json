@@ -6,6 +6,7 @@
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
+
   "production": {
     "username": "b3bc0d1ea02cd4",
     "password": "c2efb195",

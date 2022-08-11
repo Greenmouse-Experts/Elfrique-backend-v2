@@ -76,7 +76,7 @@ exports.createAdminUser = async (req, res, next) => {
         req.flash("warning", "This Email already exists!");
         res.redirect("back");
       } else {
-        const hashPwd = await bcrypt.hashSync(password, 10);
+        const hashPwd = bcrypt.hashSync(password, 10);
         const newAdmin = await Admin.create({
           firstname,
           lastname,

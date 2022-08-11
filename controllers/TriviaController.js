@@ -1,20 +1,20 @@
 require("dotenv").config();
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+// const bcrypt = require("bcryptjs");
+// const jwt = require("jsonwebtoken");
 
-const generateUniqueId = require("generate-unique-id");
-const uniqueString = require("unique-string");
-const nodemailer = require("nodemailer");
+// const generateUniqueId = require("generate-unique-id");
+// const uniqueString = require("unique-string");
+// const nodemailer = require("nodemailer");
 //const sequelize = require("../config/db");
 const User = require("../models").adminuser;
-const ResetPasswords = require("../models").resetpassword;
+// const ResetPasswords = require("../models").resetpassword;
 const Profile = require("../models").profile;
 const Trivia = require("../models").trivia;
 const Question = require("../models").question;
 const Options = require("../models").questionOption;
 const Player = require("../models").triviaplayer;
 
-const excludeAtrrbutes = { exclude: ["createdAt", "updatedAt", "deletedAt"] };
+// const excludeAtrrbutes = { exclude: ["createdAt", "updatedAt", "deletedAt"] };
 
 // imports initialization
 const { Op } = require("sequelize");
@@ -317,7 +317,8 @@ exports.addTriviaPlayer = async (req, res) => {
         player: newPlayer,
       });
     } else {
-      return res.status(200).send({
+      return res.status(401).send({
+        status: false,
         message: "Player already exists",
         player: player,
       });
@@ -377,3 +378,66 @@ exports.getSingleTrivia = async (req, res) => {
     return res.status(500).send({ message: "Server Error" });
   }
 };
+
+
+exports.answerQuestion = async(req, res, next)=>{
+  const { trivia_answer, playerEmail} = req.body;
+  const id = req.params.triviaId
+  try {
+    var score = 0; 
+    await Player.findOne({
+        where: {
+          triviaId: id,
+          email: playerEmail
+        }
+    }).then(async(player)=>{
+        if(player){
+          for(var i =0; i< trivia_answer.length; i++){
+          await Question.findOne({
+                  where: {
+                    triviaId: id,
+                    id: trivia_answer[i].questionId
+                  }
+                }).then(async(question)=>{
+                  if(question){
+                      if(question.answer === trivia_answer[i].answer){
+                        score = score + 1;
+                      }
+                  }
+                })
+          }
+
+          await Player.update({
+            score: score,
+            timeplayed: new Date(),
+          }, 
+            {
+              where: {
+              id: player.id
+            }
+          })
+
+          const result = await Player.findOne({
+            where: {
+              id: player.id
+            }
+          })
+
+          res.json({
+            status: true,
+            data: result
+          })
+        
+      }else{
+          res.json({
+            status: false,
+            message: "Player not found"
+          })
+    }
+  });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Server Error" });
+    next(error)
+  }
+}

@@ -106,6 +106,7 @@ const {
   createFormValidation,
   createQuestionValidation,
 } = require("../helpers/validator");
+const { contactUs } = require("../controllers/contactUs");
 
 const router = express.Router();
 
@@ -186,7 +187,7 @@ router.get("/allVoteContest", VoteContestController.findAllVoteContest);
 
 router.get("/getallAward", Auth, AwardContestController.getAllAwardsContest);
 
-router.get("/getAward/:id", Auth, AwardContestController.getSingleAwardContest);
+router.get("/getAward/:id", AwardContestController.getSingleAwardContest);
 
 router.post(
   "/createContestant/:id",
@@ -216,15 +217,10 @@ router.post(
 
 router.get(
   "/getallCategories/:id",
-  Auth,
   AwardContestController.getAllAwardCategories
 );
 
-router.get(
-  "/getSingleCategory/:title/:id",
-  Auth,
-  AwardContestController.getSingleCategory
-);
+router.get("/getSingleCategory/:id", AwardContestController.getSingleCategory);
 
 router.post(
   "/createNominees/:title/:id",
@@ -232,6 +228,8 @@ router.post(
   upload.single("image"),
   AwardContestController.createAwardNominees
 );
+
+router.get("/getSingleNominee/:id", AwardContestController.getSingleNominee);
 
 router.get("/allAwards", AwardContestController.findAllAwards);
 
@@ -251,7 +249,7 @@ router.post(
 
 router.get("/getAllEvents", Auth, EventController.getAllEvents);
 
-router.get("/getSingleEvent/:id", Auth, EventController.getSingleEvent);
+router.get("/getSingleEvent/:id", EventController.getSingleEvent);
 
 router.delete("/deleteEvent/:id", Auth, EventController.deleteEvent);
 
@@ -299,6 +297,8 @@ router.get("/allTrivia", TriviaController.findAllTrivias);
 router.get("/getSingleTrivia/:id", TriviaController.getSingleTrivia);
 
 router.post("/createPlayer/:id", TriviaController.addTriviaPlayer);
+
+router.post("/trivia-answer/:triviaId", TriviaController.answerQuestion);
 
 router.get("/getUserRef", Auth, ReferralController.getReferralByUser);
 
@@ -519,5 +519,8 @@ router.get("/getprice", Auth, getSubPrice);
 router.get("/pay/verify", Auth, verify);
 
 router.delete("/deleteprice/:id", Auth, deletePrice);
+
+//---------------------------------------------------------Contact Us--------------------------------------------------
+router.post("/contact-us", contactUs);
 
 module.exports = router;

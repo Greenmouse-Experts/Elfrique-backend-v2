@@ -33,11 +33,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         senderId:{
             allowNull: true,
-            type: DataTypes.INTEGER,  
+            type: DataTypes.STRING,  
           },
         receiverId: {
             allowNull: true,
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
         },
         message: {
             allowNull: true,

@@ -1,6 +1,6 @@
 "use strict";
-const { nanoid } = require("nanoid");
 const { Model } = require("sequelize");
+const { nanoid } = require("nanoid");
 module.exports = (sequelize, DataTypes) => {
   class trivia extends Model {
     /**
@@ -25,7 +25,6 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
-
   trivia.init(
     {
       id: {

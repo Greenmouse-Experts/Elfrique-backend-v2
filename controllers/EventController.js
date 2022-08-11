@@ -100,30 +100,29 @@ exports.getAllEvents = async (req, res) => {
 
 exports.getSingleEvent = async (req, res) => {
   try {
-    const adminuserId = req.user.id;
-    const profile = await Profile.findOne({
-      where: { adminuserId },
-      include: [
-        {
-          model: User,
-          attributes: {
-            exclude: ["password", "createdAt", "updatedAt", "deletedAt"],
-          },
-        },
-      ],
-    });
-    if (!profile) {
-      return res.status(404).send({
-        message: "User not found",
-      });
-    }
     const events = await Event.findOne({
-      where: { adminuserId, id: req.params.id },
+      where: {
+        id: req.params.id,
+      },
       include: [
         {
           model: eventsTicket,
           attributes: {
             exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+        },
+        {
+          model: User,
+          include: [
+            {
+              model: Profile,
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "deletedAt"],
+              },
+            },
+          ],
+          attributes: {
+            exclude: ["password", "createdAt", "updatedAt", "deletedAt"],
           },
         },
       ],

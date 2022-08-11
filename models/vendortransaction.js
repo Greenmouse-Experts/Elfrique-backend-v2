@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: () => nanoid(10)
     },
     userId:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         references:{ 
           model: 'adminusers',
           key: 'id',

@@ -10,8 +10,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       //eventjob.belongsTo(models.event);
-      url.belongsTo(models.adminuser, {
-        foreignKey: "userId",
+      url.belongsTo(models.adminuser,{
+        foreignKey: "userId"
       });
       //event.hasMany(models.eventjob)
     }
@@ -33,8 +33,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       shortUrl: {
         type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
       },
     },
     {
