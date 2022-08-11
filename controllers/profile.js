@@ -44,9 +44,6 @@ exports.getUserProfile = async (req, res) => {
 };
 
 exports.editUserProfile = async (req, res) => {
-  console.log(`\n\n\nreq is `);
-  console.log(req.user);
-  console.log(`\n\n\n`);
   try {
     const user = await User.findOne({
       where: {

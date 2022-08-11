@@ -1,4 +1,5 @@
 "use strict";
+const { nanoid } = require("nanoid");
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class questionOption extends Model {
@@ -19,6 +20,13 @@ module.exports = (sequelize, DataTypes) => {
   questionOption.init(
     {
       option: DataTypes.STRING,
+      id: {
+        type: DataTypes.STRING(10),
+        autoincrement: false,
+        allowNull: false,
+        primaryKey: true,
+        defaultValue: () => nanoid(10),
+      },
     },
     {
       sequelize,

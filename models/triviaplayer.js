@@ -1,4 +1,5 @@
 "use strict";
+const { nanoid } = require("nanoid");
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class triviaplayer extends Model {
@@ -18,11 +19,18 @@ module.exports = (sequelize, DataTypes) => {
   triviaplayer.init(
     {
       id: {
+        type: DataTypes.STRING(10),
+        autoincrement: false,
         allowNull: false,
         primaryKey: true,
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV1,
+        defaultValue: () => nanoid(10),
       },
+      // id: {
+      //   allowNull: false,
+      //   primaryKey: true,
+      //   type: DataTypes.UUID,
+      //   defaultValue: DataTypes.UUIDV1,
+      // },
       triviaId: {
         allowNull: false,
         type: DataTypes.INTEGER,

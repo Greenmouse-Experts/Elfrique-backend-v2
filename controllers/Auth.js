@@ -1,5 +1,6 @@
 require("dotenv").config();
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const generateUniqueId = require("generate-unique-id");
 const uniqueString = require("unique-string");
@@ -73,7 +74,6 @@ exports.registerUser = async (req, res, next) => {
           password: hashPwd,
           reference: uniqueRef,
         });
-        ////////       console.log(`\n\n\n\nemalia tokenaaa\n\n\n\n\n\n`);/////////////////////////////////////
       }
 
       const newProfile = await profile.create({
@@ -351,7 +351,12 @@ exports.login = async (req, res, next) => {
             "Account not activated: Check your email for activation link",
         });
       } else {
-        const compare = bcrypt.compareSync(password, user.password);
+        let compare = bcrypt.compareSync(password, user.password);
+        if (user.password[0] != "$") {
+          compare =
+            crypto.createHash("sha1").update(password).digest("hex") ===
+            user.password;
+        }
         if (!compare) {
           return res.status(400).send({ message: "Invalid Password" });
         } else {
@@ -363,7 +368,6 @@ exports.login = async (req, res, next) => {
           const token = jwt.sign(payload, process.env.JWT_SECRET, {
             expiresIn: "3d",
           });
-          console.log("\n\npassed passwd\n\n");
           return res.status(200).send({ token, user });
         }
       }
