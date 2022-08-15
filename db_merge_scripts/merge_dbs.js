@@ -1,4 +1,5 @@
 const old_db = require("./old_db.json");
+const media_base = "https://stageapp.elfrique.com";
 require("dotenv").config;
 const {
   adminuser,
@@ -7,21 +8,34 @@ const {
   trivia,
   question,
   questionOption,
+  votingContest,
+  contestants,
   payout,
   triviaplayer,
+  formOption,
+  formQuestion,
 } = require("../models");
 const generateUniqueId = require("generate-unique-id");
 const db = require("../database/db");
 module.exports = async (req, res) => {
-  const text = "merging...";
-  res.send(text);
+  const _id = req.params.id;
+  const text = "merged...";
+
   console.log(text);
-  // sync_admins_and_profiles();
-  // sync_urls();
-  // sync_trivia();
-  // sync_trivia_questions();
-  sync_trivia_options();
-  // sync_triviaplayers();
+  const migration_functions = [
+    sync_admins_and_profiles,
+    sync_urls,
+    sync_trivia,
+    sync_trivia_questions,
+    sync_trivia_options,
+    sync_triviaplayers,
+    sync_votingcontests,
+    sync_contestants,
+  ];
+  const _func = migration_functions[parseInt(_id) - 1];
+  _func();
+
+  res.send(text + _func.name);
 };
 
 const getItemsFromJson = (data, table) => {
@@ -102,7 +116,7 @@ const sync_urls = () => {
         const _user = await adminuser.findOne({
           where: { email: organiserEmail },
         });
-        const shortUrl = `${baseUrl}/${_url.alias}`;
+        const shortUrl = `${baseUrl}/s/${_url.alias}`;
         //create
         try {
           const newUrl = await url.create({
@@ -139,7 +153,9 @@ const sync_trivia = () => {
           const newTrivia = await trivia.create({
             title: _trivia.title,
             identification_name: _trivia.identification_name,
-            image: _trivia.image ? `/uploads/${_trivia.image}` : null,
+            image: _trivia.image
+              ? `${media_base}/uploads/${_trivia.image}`
+              : null,
             details: _trivia.detail,
             instruction: _trivia.instruction,
             duration: _trivia.duration,
@@ -181,7 +197,7 @@ const sync_trivia_questions = () => {
           const newTriviaQuestion = await question.create({
             question: _trivia_questions.body,
             image: _trivia_questions.image
-              ? `/uploads/${_trivia_questions.image}`
+              ? `${media_base}/uploads/${_trivia_questions.image}`
               : null,
             answer: triviaAnswer,
             _id_: _trivia_questions.id,
@@ -277,6 +293,110 @@ const sync_triviaplayers = () => {
   });
 };
 
+const sync_votingcontests = () => {
+  ////ToDo: Sync date added and edited.
+  const old_contest = getItemsFromJson(old_db, "voting_details");
+  const old_admins = getItemsFromJson(old_db, "organisers");
+  old_contest.forEach(async (_contest) => {
+    // Get admin id
+    old_admins.forEach(async (_admin_) => {
+      if (_admin_.id === _contest.organisers_id) {
+        const organiserEmail = _admin_.email;
+
+        const _user = await adminuser.findOne({
+          where: { email: organiserEmail },
+        });
+        let _type = "free";
+        if (Number(_contest.fee) > 0) {
+          _type = "paid";
+        }
+        //create
+        try {
+          const newContest = await votingContest.create({
+            title: _contest.title,
+            type: _type,
+            identification_name: _contest.identification_name,
+            fee: _contest.fee,
+            votelimit: _contest.daily_limit,
+            startdate: _contest.start_date_utc,
+            closedate: _contest.closing_date_utc,
+            timezone: _contest.timezone,
+            paymentgateway: _contest.payment_gateway,
+            packagestatus: _contest.status,
+            image: _contest.image
+              ? `${media_base}/uploads/${_contest.image}`
+              : null,
+            adminuserId: _user.id,
+          });
+          console.log("trivia created:", newContest.title);
+        } catch (error) {
+          console.log("failed to create trivia", _contest.title, error); //error);
+        }
+      }
+    });
+  });
+};
+const sync_contestants = () => {
+  ////ToDo: Sync date added and edited.
+  const old_contestant = getItemsFromJson(old_db, "contestants");
+  const old_contestDetails = getItemsFromJson(old_db, "voting_details");
+  const old_votes = getItemsFromJson(old_db, "votes");
+  old_contestant.forEach(async (_contestant) => {
+    // Get admin id
+
+    old_contestDetails.forEach(async (_contest_) => {
+      if (_contest_.id === _contestant.voting_details_id) {
+        const contest_name = _contest_.identification_name;
+        //////// continue editing from here
+        const _voteCount = () => {
+          let count = 0;
+          for (const vote of old_votes) {
+            if (
+              vote.voting_details_id === _contest_.id &&
+              vote.contestant_id === _contestant.id
+            ) {
+              count += 1;
+              console.log(
+                "count is",
+                count,
+                "(",
+                vote.voting_details_id,
+                _contest_.id,
+                ")",
+                "(",
+                vote.contestant_id,
+                _contestant.id,
+                ")"
+              );
+            }
+          }
+          return count;
+        };
+        const contest = await votingContest.findOne({
+          where: { identification_name: contest_name },
+        });
+        //create
+        try {
+          const newContestant = await contestants.create({
+            fullname: _contestant.fullname,
+            image: _contestant.image
+              ? `${media_base}/uploads/${_contestant.image}`
+              : null,
+            identification_name: _contestant.identification_name,
+            contestantnumber: _contestant.number,
+            about: _contestant.about,
+            voteCount: _voteCount(),
+            votingContestId: contest.id,
+          });
+          console.log("trivia created:", newContestant.fullname);
+        } catch (error) {
+          console.log("failed to create trivia", _contestant.fullname, error); //error);
+        }
+      }
+    });
+  });
+};
+
 const sync_payout = () => {
   ////ToDo: Sync date added and edited.
   const old_payouts = getItemsFromJson(old_db, "payouts");
@@ -294,7 +414,9 @@ const sync_payout = () => {
         try {
           const newTrivia = await trivia.create({
             title: _trivia.title,
-            image: _trivia.image ? `/uploads/${_trivia.image}` : null,
+            image: _trivia.image
+              ? `${media_base}/uploads/${_trivia.image}`
+              : null,
             details: _trivia.detail,
             instruction: _trivia.instruction,
             duration: _trivia.duration,

@@ -40,7 +40,7 @@ app.use("/docs", swaggerUI.serve, swaggerUI.setup(specs));
 const baseUrl = process.env.BASEURL;
 
 var addr = new parse(baseUrl);
-console.log(addr.host);*/
+console.(addr.host);*/
 
 app.use(express.json());
 app.use(
@@ -76,7 +76,7 @@ app.use(function (req, res, next) {
 app.use(morgan("tiny"));
 // routes
 
-app.get("/api/v1/merge", dbMergeScript);
+app.get("/api/v1/merge/:id", dbMergeScript);
 app.get("/api/v1/migrate", dbMigrationScript);
 app.use("/api/v1", apiRoute);
 app.use("/", urlRoute);
