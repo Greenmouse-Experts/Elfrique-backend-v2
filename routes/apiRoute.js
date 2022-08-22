@@ -324,9 +324,26 @@ router.post(
 
 router.get("/getAllForm", Auth, FormController.getFormByUser);
 
+// router.get("/getForms", FormController.findAllForms);
 router.get("/allForms", FormController.findAllForms);
 
 router.get("/getForm/:id", FormController.getForm);
+
+/**
+ * createFormReply
+ * getFormReplies
+ * getFormReplies/:id
+ */
+router.post(
+  "/createFormReply",
+  Auth,
+  upload.single("image"),
+  createFormValidation(),
+  validate,
+  FormController.createForm
+);
+router.get("/getFormReplies", Auth, FormController.getFormByUser);
+router.get("/getFormReplies/:id", FormController.getForm);
 
 ///super admin routes
 

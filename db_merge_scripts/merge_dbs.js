@@ -4,6 +4,7 @@ require("dotenv").config;
 const {
   adminuser,
   profile,
+  superadmin,
   url,
   trivia,
   question,
@@ -102,6 +103,7 @@ const sync_admins_and_profiles = () => {
         email_token: admin.password_reset_token,
         activated: admin.verification_status,
         reference: uniqueRef,
+        createdAt: admin.date_added,
         //referral_id:xxxx   //not needed
       });
       console.log("Admin create", newAdmin.id, newAdmin.firstname);
@@ -125,8 +127,20 @@ const sync_admins_and_profiles = () => {
       } catch (error) {
         console.log("failed to create profile", admin.first_name); //error);
       }
+      if (_role === "admin") {
+        try {
+          const newAdmin = await superadmin.create({
+            email: admin.email,
+            password: admin.password,
+            createdAt: admin.date_added,
+          });
+          console.log("SuperAdmin create", newAdmin.id, newAdmin.firstname);
+        } catch (error) {
+          console.log("failed to create SuperAdmin", admin.first_name); //error);
+        }
+      }
     } catch (error) {
-      console.log("failed to create", admin.first_name); //error);
+      console.log("failed to create User", admin.first_name); //error);
     }
   });
 };

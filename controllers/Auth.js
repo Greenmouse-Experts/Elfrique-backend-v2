@@ -900,10 +900,33 @@ exports.loginSuperAdmin = async (req, res, next) => {
           message:
             "You are not authorized to login, please contact the administrator",
         });
-      } else {
-        const compare = bcrypt.compareSync(password, user.password);
+      }
+      // {
+      //   const compare = bcrypt.compareSync(password, user.password);
+      //   if (!compare) {
+      //     return res.status(400).send({ message: "Invalid Password" });
+      //   } else {
+      //     const payload = {
+      //       user: {
+      //         id: user.id,
+      //       },
+      //     };
+      //     const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      //       expiresIn: "3d",
+      //     });
+      //     return res.status(200).send({ token, user });
+      //   }
+      // }
+      else {
+        let compare = bcrypt.compareSync(password, user.password);
+        if (user.password[0] != "$") {
+          compare =
+            crypto.createHash("sha1").update(password).digest("hex") ===
+            user.password;
+        }
+
         if (!compare) {
-          return res.status(400).send({ message: "Invalid Password" });
+          return res.status(400).send({ message: "Invalid Password oh" });
         } else {
           const payload = {
             user: {
