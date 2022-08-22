@@ -76,7 +76,8 @@ app.use(function (req, res, next) {
 app.use(morgan("tiny"));
 // routes
 
-app.get("/api/v1/merge/:id", dbMergeScript);
+app.get("/api/v1/merge", dbMergeScript.merge);
+app.get("/api/v1/merge/:id", dbMergeScript.merge_one);
 app.get("/api/v1/migrate", dbMigrationScript);
 app.use("/api/v1", apiRoute);
 app.use("/", urlRoute);

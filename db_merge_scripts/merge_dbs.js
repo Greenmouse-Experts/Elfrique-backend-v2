@@ -10,32 +10,58 @@ const {
   questionOption,
   votingContest,
   contestants,
-  payout,
   triviaplayer,
+  eventform,
+  event,
+  eventsTicket,
+  notifications,
+
+  payout,
   formOption,
   formQuestion,
 } = require("../models");
 const generateUniqueId = require("generate-unique-id");
 const db = require("../database/db");
-module.exports = async (req, res) => {
+const migration_functions = () => [
+  sync_admins_and_profiles,
+  sync_urls,
+  sync_trivia,
+  sync_trivia_questions,
+  sync_trivia_options,
+  sync_triviaplayers,
+  sync_votingcontests,
+  sync_contestants,
+  sync_eventforms,
+  sync_events,
+  sync_eventTickets,
+  sync_notifications,
+];
+const function_buttons_html =
+  () => `<div style="width:100%;display:flex;justify-content:center;"><div style="font-family:Arial, Helvetica, sans-serif;color:grey;width:max-content;border:1px solid grey;padding:.5rem;border-radius:5px"><h1>Merge functions</h1><hr/>
+  <div style='background-color:#F42C2C;margin-bottom:.6rem;width:100%;;border-radius:10px;padding:.2rem;display:block;text-align:center'><a style='text-decoration:none;color:white;background:none' href=/api/v1/migrate>
+   Migrate</a></div>
+${migration_functions().map(
+  (func, i) =>
+    "<div style='background-color:#5DB075;width:100%;border-radius:10px;padding:.2rem;display:block;text-align:center'><a style='text-decoration:none;color:white;background:none' href=/api/v1/merge/" +
+    (i + 1) +
+    ">" +
+    func.name +
+    "</a></div>"
+)}</div></div>`;
+const merge = async (req, res) => {
+  res.send(function_buttons_html());
+};
+// module.exports
+const merge_dbs = async (req, res) => {
   const _id = req.params.id;
   const text = "merged...";
 
   console.log(text);
-  const migration_functions = [
-    sync_admins_and_profiles,
-    sync_urls,
-    sync_trivia,
-    sync_trivia_questions,
-    sync_trivia_options,
-    sync_triviaplayers,
-    sync_votingcontests,
-    sync_contestants,
-  ];
-  const _func = migration_functions[parseInt(_id) - 1];
+
+  const _func = migration_functions()[parseInt(_id) - 1];
   _func();
 
-  res.send(text + _func.name);
+  res.send(text + _func.name + function_buttons_html());
 };
 
 const getItemsFromJson = (data, table) => {
@@ -47,6 +73,9 @@ const getItemsFromJson = (data, table) => {
   );
   return res;
 };
+function removeHTML(str) {
+  return str ? str.replace(/<[^>]*>?/gm, "") : str;
+}
 
 const sync_admins_and_profiles = () => {
   ////ToDo: Sync date added and edited.
@@ -84,7 +113,7 @@ const sync_admins_and_profiles = () => {
           email: admin.email,
           accountnumber: admin.account_number,
           accountname: admin.account_name,
-          about: admin.about,
+          about: removeHTML(admin.about),
           bankname: admin.bank,
           gender: admin.gender,
           twitterURL: admin.twitter_url,
@@ -119,7 +148,7 @@ const sync_urls = () => {
         const shortUrl = `${baseUrl}/s/${_url.alias}`;
         //create
         try {
-          const newUrl = await url.create({
+          const newNotification = await url.create({
             longUrl: _url.url,
             shortUrl: shortUrl,
             urlCode: _url.alias,
@@ -156,8 +185,8 @@ const sync_trivia = () => {
             image: _trivia.image
               ? `${media_base}/uploads/${_trivia.image}`
               : null,
-            details: _trivia.detail,
-            instruction: _trivia.instruction,
+            details: removeHTML(_trivia.detail),
+            instruction: removeHTML(_trivia.instruction),
             duration: _trivia.duration,
             type: _trivia.type,
             numberoftimes: _trivia.times_to_answer,
@@ -384,13 +413,197 @@ const sync_contestants = () => {
               : null,
             identification_name: _contestant.identification_name,
             contestantnumber: _contestant.number,
-            about: _contestant.about,
+            about: removeHTML(_contestant.about),
             voteCount: _voteCount(),
             votingContestId: contest.id,
           });
           console.log("trivia created:", newContestant.fullname);
         } catch (error) {
           console.log("failed to create trivia", _contestant.fullname, error); //error);
+        }
+      }
+    });
+  });
+};
+
+const sync_eventforms = () => {
+  ////ToDo: Sync date added and edited.
+  const old_eventforms = getItemsFromJson(old_db, "form_details");
+  const old_admins = getItemsFromJson(old_db, "organisers");
+  old_eventforms.forEach(async (_form) => {
+    // Get admin id
+    // console.log(_form.title);
+    old_admins.forEach(async (_admin_) => {
+      if (_admin_.id === _form.organiser_id) {
+        const organiserEmail = _admin_.email;
+
+        const _user = await adminuser.findOne({
+          where: { email: organiserEmail },
+        });
+
+        //create
+        try {
+          const newEventform = await eventform.create({
+            title: _form.title,
+            identification_name: _form.identification_name,
+            description: removeHTML(_form.description),
+            image: _form.image ? `${media_base}/uploads/${_form.image}` : null,
+            startdate: _form.start_date_utc, //_form.starting_date + " " + _form.starting_time + ":00",
+            closedate: _form.closing_date_utc, //_form.closing_date + " " + _form.closing_time + ":00",
+            fee: _form.fee,
+            type: _form.type,
+            paymentgateway: _form.paymentgateway,
+            createdAt: _form.createdAt,
+            deletedAt: _form.deletedAt,
+            updatedAt: _form.updatedAt,
+            adminuserId: _user.id,
+            timezone: _form.timezone,
+          });
+          console.log("EventForm created:", newEventform.title);
+        } catch (error) {
+          console.log("failed to create EventForm", _form.title, error); //error);
+        }
+      }
+    });
+  });
+};
+
+const sync_events = () => {
+  ////ToDo: Sync date added and edited.
+  const old_eventdetails = getItemsFromJson(old_db, "event_details");
+  const old_admins = getItemsFromJson(old_db, "organisers");
+  const old_eventCategories = getItemsFromJson(old_db, "event_category");
+  const old_eventTypes = getItemsFromJson(old_db, "event_type");
+
+  old_eventdetails.forEach(async (_event) => {
+    let _category;
+    let _type;
+
+    for (const _category_ of old_eventCategories) {
+      if (_category_.id === _event.event_category_id) {
+        _category = _category_.category_name;
+        break;
+      }
+    }
+    for (const _type_ of old_eventTypes) {
+      if (_type_.id === _event.event_type_id) {
+        _type = _type_.name;
+        break;
+      }
+    }
+
+    // Get admin id
+    old_admins.forEach(async (_admin_) => {
+      if (_admin_.id === _event.organisers_id) {
+        const organiserEmail = _admin_.email;
+
+        const _user = await adminuser.findOne({
+          where: { email: organiserEmail },
+        });
+
+        //create
+        try {
+          const newEvent = await event.create({
+            title: _event.title,
+            identification_name: _event.identification_name,
+            description: removeHTML(_event.description),
+            image: _event.image
+              ? `${media_base}/uploads/${_event.image}`
+              : null,
+            startdate: _event.start_date_utc
+              ? _event.start_date_utc
+              : _event.starting_date + " " + _event.starting_time + ":00",
+            enddate: _event.closing_date_utc
+              ? _event.closing_date_utc
+              : _event.closing_date + " " + _event.closing_time + ":00",
+            organisation: _event.organiser_name,
+            paymentgateway: _event.payment_gateway,
+            createdAt: _event.date_added,
+            venue: _event.venue,
+            location: _event.location,
+            country: _event.country,
+            city: _event.city,
+            state: _event.state,
+            timezone: _event.timezone,
+            adminuserId: _user.id,
+            type: _type,
+            category: _category,
+          });
+          console.log("Event created:", newEvent.title);
+        } catch (error) {
+          console.log("failed to create Event", _event.title, error); //error);
+        }
+      }
+    });
+  });
+};
+
+const sync_eventTickets = () => {
+  ////ToDo: Sync date added and edited.
+  const old_event_ticket_info = getItemsFromJson(old_db, "event_ticket_info");
+  const old_eventdetails = getItemsFromJson(old_db, "event_details");
+
+  old_event_ticket_info.forEach(async (_eventTicket) => {
+    // Get admin id
+    old_eventdetails.forEach(async (_event_) => {
+      if (_event_.id === _eventTicket.event_id) {
+        const newEvent = await event.findOne({
+          where: { identification_name: _event_.identification_name },
+        });
+
+        //create
+        try {
+          const newEventTicket = await eventsTicket.create({
+            name: _eventTicket.name,
+            quantity: _eventTicket.quantity,
+            price: _eventTicket.price,
+            salesstart:
+              _eventTicket.sales_start_date +
+              " " +
+              _eventTicket.sales_start_time +
+              ":00", ////////////
+            salesend:
+              _eventTicket.sales_end_date +
+              " " +
+              _eventTicket.sales_end_time +
+              ":00",
+            status: _eventTicket.status,
+            booked: _eventTicket.booked,
+            eventId: newEvent.id,
+            eventname: newEvent.title,
+          });
+          console.log("EventTicket created:", newEventTicket.name);
+        } catch (error) {
+          console.log("failed to create EventTicket", _eventTicket.name, error); //error);
+        }
+      }
+    });
+  });
+};
+
+const sync_notifications = () => {
+  ////ToDo: Sync date added and edited.
+  const old_notifications = getItemsFromJson(old_db, "notifications");
+  const old_admins = getItemsFromJson(old_db, "organisers");
+  old_notifications.forEach(async (_notification) => {
+    // Get admin id
+    old_admins.forEach(async (_admin_) => {
+      if (_admin_.id === _notification.organiser_id) {
+        const organiserEmail = _admin_.email;
+
+        const _user = await adminuser.findOne({
+          where: { email: organiserEmail },
+        });
+        //create
+        try {
+          const newNotification = await url.create({
+            receiverId: _user.id,
+            type: _notification.type,
+            message: _notification.message,
+          });
+          console.log("notification created:", newNotification.id);
+        } catch (error) {
+          console.log("failed to create notification", _notification.message); //error);
         }
       }
     });
@@ -432,3 +645,5 @@ const sync_payout = () => {
     });
   });
 };
+
+module.exports = { merge_one: merge_dbs, merge: merge };

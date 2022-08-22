@@ -1,6 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
-const {nanoid} = require("nanoid");
+const { nanoid } = require("nanoid");
 
 module.exports = (sequelize, DataTypes) => {
   class eventform extends Model {
@@ -18,13 +18,14 @@ module.exports = (sequelize, DataTypes) => {
   }
   eventform.init(
     {
+      identification_name: DataTypes.STRING,
       id: {
         type: DataTypes.STRING(10),
         autoincrement: false,
         allowNull: false,
         primaryKey: true,
-        defaultValue: () => nanoid(10)
-    },
+        defaultValue: () => nanoid(10),
+      },
       title: {
         allowNull: false,
         type: DataTypes.STRING,

@@ -270,7 +270,7 @@ exports.createJob = async (req, res, next) => {
       });
       await job.save();
     }
-    
+
     res.status(201).json({
       status: true,
       message: "Job Created Successfully",
@@ -524,7 +524,7 @@ exports.deleteJob = async (req, res, next) => {
   }
 };
 
-exports.assignedJob = async (req, res, next) => {
+(exports.assignedJob = async (req, res, next) => {
   const jobId = req.params.jobId;
   const userId = req.params.userId;
   try {
@@ -543,8 +543,8 @@ exports.assignedJob = async (req, res, next) => {
     console.error(error);
     return next(error);
   }
-},
-  exports.viewAllAssignedJob = async (req, res, next) => {
+}),
+  (exports.viewAllAssignedJob = async (req, res, next) => {
     try {
       const jobs = await AssignJob.findAll({
         include: [
@@ -572,7 +572,7 @@ exports.assignedJob = async (req, res, next) => {
       console.error(error);
       return next(error);
     }
-  };
+  });
 
 exports.viewAssignedJob = async (req, res, next) => {
   try {

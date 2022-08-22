@@ -7,6 +7,11 @@ const {
   questionOption,
   votingContest,
   contestants,
+  eventform,
+  event,
+  eventsTicket,
+  notifications,
+
   payout,
   triviaplayer,
   formOption,
@@ -14,7 +19,7 @@ const {
 } = require("../models");
 
 module.exports = async (req, res) => {
-  const text = "migrating...";
+  const text = "migrating...<br/><a href='/api/v1/merge'>Merge dbs</a>";
   adminuser.sync({ alter: true });
   res.send(text);
   console.log(text);
@@ -26,10 +31,13 @@ module.exports = async (req, res) => {
   questionOption.sync({ alter: true });
   votingContest.sync({ alter: true });
   contestants.sync({ alter: true });
-  // payout.sync({ alter: true });
+  eventform.sync({ alter: true });
+  event.sync({ alter: true });
+  eventsTicket.sync({ alter: true });
   triviaplayer.sync({ alter: true });
   formOption.sync({ alter: true });
   formQuestion.sync({ alter: true });
+  notifications.sync({ alter: true });
 
   console.log("Added models");
 };
