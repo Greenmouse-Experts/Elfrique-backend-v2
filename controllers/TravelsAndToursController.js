@@ -50,7 +50,7 @@ exports.flightSearch = async (req, res) => {
 exports.flightSelect = async (req, res) => {
   try {
     const { currency, selectData } = req.body;
-    const flightSelectResponse = await wakanow.flightSearch(
+    const flightSelectResponse = await wakanow.flightSelect(
       currency,
       selectData
     );
