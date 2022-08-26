@@ -5,7 +5,6 @@ const { airportsList } = require("../wakanow"); //wakanow.airportsList;
 
 exports.flightAirportsList = async (req, res) => {
   try {
-    console.log(airportsList);
     return res.status(200).send(airportsList);
   } catch (error) {
     console.log(error);
