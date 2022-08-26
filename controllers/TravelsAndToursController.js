@@ -1,6 +1,4 @@
-const wakanow = require("../wakanow");
-const { airportsList } = require("../wakanow"); //wakanow.airportsList;
-
+const { wakanow, airportsList } = require("../wakanow"); //wakanow.airportsList;
 //--------------Flight---------
 
 exports.flightAirportsList = async (req, res) => {

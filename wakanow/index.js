@@ -3,6 +3,8 @@ const { url, username, password, grantType } = require("./wakanow_config");
 const { Wakanow } = require("./src/Wakanow");
 console.log(url, username, password, grantType);
 const airportsList = require("./src/data/airportsList.json");
-module.exports =
-  (new Wakanow(url, username, password, grantType), { airportsList });
+module.exports = {
+  wakanow: new Wakanow(url, username, password, grantType),
+  airportsList,
+};
 // module.exports={}
