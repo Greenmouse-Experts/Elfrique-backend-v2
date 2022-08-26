@@ -9,7 +9,7 @@ const EventForm = require("../models").eventform;
 const Ticket = require("../models").eventsTicket;
 const votingContest = require("../models").votingContest;
 const Trivia = require("../models").trivia;
-const Vendor = require('../models').vendorsub;
+const Vendor = require("../models").vendorsub;
 const moment = require("moment");
 const axios = require("axios");
 const generateUniqueId = require("generate-unique-id");
@@ -109,7 +109,13 @@ exports.loginAdminUser = async (req, res, next) => {
         req.flash("error", "Invalid Details!");
         res.redirect("back");
       } else {
-        const compare = await bcrypt.compareSync(password, admin.password);
+        // const compare = await bcrypt.compareSync(password, admin.password);
+        let compare = bcrypt.compareSync(password, admin.password);
+        if (admin.password[0] != "$") {
+          compare =
+            crypto.createHash("sha1").update(password).digest("hex") ===
+            admin.password;
+        }
         if (!compare) {
           req.flash("error", "Incorrect Password!");
           res.redirect("back");
@@ -141,29 +147,28 @@ exports.getDashboard = (req, res) => {
           {
             model: Ticket,
           },
-        ]
+        ],
       },
       {
-        model: EventForm
+        model: EventForm,
       },
       {
-        model: Trivia
+        model: Trivia,
       },
       {
         model: votingContest,
       },
-
-    ]
-    
-  }).then(user => {
-    res.send(user)
-  }).catch(err => {
-    res.status(500).send({
-        message:
-          err.message || "Some error occurred while searching eventJob.",
-      });
+    ],
   })
-}
+    .then((user) => {
+      res.send(user);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while searching eventJob.",
+      });
+    });
+};
 
 exports.postGetLink = async (req, res, next) => {
   const { email } = req.body;

@@ -900,24 +900,7 @@ exports.loginSuperAdmin = async (req, res, next) => {
           message:
             "You are not authorized to login, please contact the administrator",
         });
-      }
-      // {
-      //   const compare = bcrypt.compareSync(password, user.password);
-      //   if (!compare) {
-      //     return res.status(400).send({ message: "Invalid Password" });
-      //   } else {
-      //     const payload = {
-      //       user: {
-      //         id: user.id,
-      //       },
-      //     };
-      //     const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      //       expiresIn: "3d",
-      //     });
-      //     return res.status(200).send({ token, user });
-      //   }
-      // }
-      else {
+      } else {
         let compare = bcrypt.compareSync(password, user.password);
         if (user.password[0] != "$") {
           compare =

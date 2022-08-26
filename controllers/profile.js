@@ -29,6 +29,22 @@ exports.getUserProfile = async (req, res) => {
         },
       ],
     });
+    // const user_votes_count = req.user.findAll({
+    //   attributes: {
+    //     include: [
+    //       [
+    //         Sequelize.fn("COUNT", Sequelize.col("votes.adminUserId")),
+    //         "userVotesCount",
+    //       ],
+    //     ],
+    //   },
+    //   include: [
+    //     {
+    //       model: votes,
+    //       attributes: [],
+    //     },
+    //   ],
+    // });
     if (!profile) {
       return res.status(404).send({
         message: "User not found",

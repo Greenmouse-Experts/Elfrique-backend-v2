@@ -15,6 +15,7 @@ const EventController = require("../controllers/EventController");
 const TicketController = require("../controllers/TicketController");
 
 const TriviaController = require("../controllers/TriviaController");
+const TravelsAndToursController = require("../controllers/TravelsAndToursController");
 
 const {
   AddNotification,
@@ -406,6 +407,13 @@ router.patch("/approveEvisa/:id", Auth, EvisaController.approveApplication);
 router.post("/sendMessage/:id", Auth, EvisaController.sendMessage);
 
 router.get("/getAllMessages", Auth, EvisaController.getAllMessages);
+
+//--------------------------------------Travels and Tours--------------------------------------------------------------------
+router.get("/flight/airports", TravelsAndToursController.flightAirportsList);
+router.post("/flight/search", TravelsAndToursController.flightSearch);
+router.post("/flight/select", TravelsAndToursController.flightSelect);
+router.post("/flight/book", TravelsAndToursController.flightBook);
+router.post("/flight/ticketpnr", TravelsAndToursController.flightTicketpnr);
 
 //--------------------------------- Payout------------------------
 
