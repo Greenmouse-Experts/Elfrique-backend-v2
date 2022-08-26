@@ -1,14 +1,12 @@
 const wakanow = require("../wakanow");
+const { airportsList } = require("../wakanow"); //wakanow.airportsList;
 
 //--------------Flight---------
 
 exports.flightAirportsList = async (req, res) => {
   try {
-    const { currency, selectData } = req.body;
-    const flightAirportsList = await wakanow.airportsList;
-    return res.status(200).send({
-      flightAirportsList,
-    });
+    console.log(airportsList);
+    return res.status(200).send(airportsList);
   } catch (error) {
     console.log(error);
     return res.status(500).send({ message: "Server Error" });
@@ -118,7 +116,7 @@ exports.flightBook = async (req, res) => {
 exports.flightTicketpnr = async (req, res) => {
   try {
     const { bookingId, PnrNumber } = req.body;
-    const flightBookingResponse = await wakanow.flightBooking(
+    const flightBookingResponse = await wakanow.flightTicketPnr(
       bookingId,
       PnrNumber
     );
