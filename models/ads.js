@@ -1,4 +1,4 @@
-const {nanoid} = require('nanoid');
+const { nanoid } = require("nanoid");
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class ads extends Model {
@@ -11,47 +11,51 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       //eventjob.belongsTo(models.event);
       ads.belongsTo(models.adminuser, {
-        foreignKey: "userId"
+        foreignKey: "userId",
       });
       //event.hasMany(models.eventjob)
     }
   }
   ads.init(
     {
-        id: {
-            type: DataTypes.STRING(10),
-            autoincrement: false,
-            allowNull: false,
-            primaryKey: true,
-            defaultValue: () => nanoid(10)
-        },
-        title:{
-            type: DataTypes.STRING,
-            allowNull: true,
-            defaultValue: null
-        },
-        ref_link:{
-            type: DataTypes.STRING,
-            allowNull: true,
-            defaultValue: null
-        },
-        img_id:{
-            type: DataTypes.STRING,
-            allowNull: true,
-            defaultValue: null
-        },
-        img_url:{
-            type: DataTypes.STRING,
-            allowNull: true,
-            defaultValue: null
-        }
+      id: {
+        type: DataTypes.STRING(10),
+        autoincrement: false,
+        allowNull: false,
+        primaryKey: true,
+        defaultValue: () => nanoid(10),
+      },
+      title: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: null,
+      },
+      ref_link: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: null,
+      },
+      img_id: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: null,
+      },
+      img_url: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: null,
+      },
+      position: {
+        type: DataTypes.ENUM("leaderboad", "sideboard"),
+        allowNull: true,
+        defaultValue: null,
+      },
     },
     {
       sequelize,
       modelName: "ads",
-      timestamps: true
+      timestamps: true,
     }
   );
   return ads;
 };
-

@@ -11,6 +11,7 @@ const {
   event,
   eventsTicket,
   notifications,
+  ads,
 
   payout,
   triviaplayer,
@@ -38,6 +39,7 @@ module.exports = async (req, res) => {
   formOption.sync({ alter: true });
   formQuestion.sync({ alter: true });
   notifications.sync({ alter: true });
+  ads.sync({ alter: true });
 
   console.log("Added models");
 };

@@ -20,14 +20,17 @@ class Wakanow {
 
   //-----------Auth methods----------
   async authenticate() {
+    // console.log("\n\n\nIn auth\n\n\n ");
     let authed = false;
     if (this.expire_time) {
       const currentTime = new Date().getTime();
-      currentTime < this.expire_time - 15000
-        ? (authed = true)
-        : (authed = false);
+      if (currentTime < this.expire_time - 15000) {
+        console.log("\n\n\nAbout to auth1\n\n\n ");
+        authed = true;
+      }
     }
     if (!authed) {
+      console.log("\n\n\nAbout to auth\n\n\n ");
       return this._generateToken().then((res) => {
         this.access_token = res.token;
         this.expire_time = res.end_date;
@@ -111,6 +114,7 @@ class Wakanow {
   async flightBooking(
     BookingData,
     BookingId,
+    PassengerType,
     FirstName,
     MiddleName,
     LastName,
@@ -135,6 +139,7 @@ class Wakanow {
       this.access_token,
       BookingData,
       BookingId,
+      PassengerType,
       FirstName,
       MiddleName,
       LastName,

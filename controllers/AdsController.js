@@ -3,7 +3,7 @@ const User = require("../models").adminuser;
 const cloudinary = require("../helpers/cloudinary");
 
 exports.createAds = async (req, res, next) => {
-  const { title, ref_link } = req.body;
+  const { title, ref_link, position } = req.body;
   try {
     await Ads.findOne({
       where: {
@@ -23,6 +23,7 @@ exports.createAds = async (req, res, next) => {
           userId: req.user.id,
           img_id: result.public_id,
           img_url: result.secure_url,
+          position: position,
         });
         await ad.save();
 

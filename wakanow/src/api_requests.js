@@ -74,6 +74,7 @@ exports.flightBooking = (
   token,
   BookingData,
   BookingId,
+  PassengerType,
   FirstName,
   MiddleName,
   LastName,
@@ -95,6 +96,7 @@ exports.flightBooking = (
   payload = {
     BookingData: BookingData,
     BookingId: BookingId,
+    PassengerType: PassengerType,
     FirstName: FirstName,
     MiddleName: MiddleName,
     LastName: LastName,

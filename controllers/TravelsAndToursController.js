@@ -62,6 +62,7 @@ exports.flightBook = async (req, res) => {
     const {
       BookingData,
       BookingId,
+      PassengerType,
       FirstName,
       MiddleName,
       LastName,
@@ -83,6 +84,7 @@ exports.flightBook = async (req, res) => {
     const flightBookResponse = await wakanow.flightBooking(
       BookingData,
       BookingId,
+      PassengerType,
       FirstName,
       MiddleName,
       LastName,
