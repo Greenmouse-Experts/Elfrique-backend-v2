@@ -12,6 +12,8 @@ const {
   eventsTicket,
   notifications,
   ads,
+  eventjob,
+  eventReferral,
 
   payout,
   triviaplayer,
@@ -34,12 +36,14 @@ module.exports = async (req, res) => {
   contestants.sync({ alter: true });
   eventform.sync({ alter: true });
   event.sync({ alter: true });
+  eventjob.sync({ alter: true });
   eventsTicket.sync({ alter: true });
   triviaplayer.sync({ alter: true });
   formOption.sync({ alter: true });
   formQuestion.sync({ alter: true });
   notifications.sync({ alter: true });
   ads.sync({ alter: true });
+  eventReferral.sync({ alter: true });
 
   console.log("Added models");
 };

@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       event.belongsTo(models.adminuser);
       event.hasMany(models.eventsTicket);
+      event.hasMany(models.eventReferral);
     }
   }
   event.init(

@@ -238,7 +238,7 @@ router.get("/allAwards", AwardContestController.findAllAwards);
 
 router.post("/vote/:contestantId", VoteContestController.voteAContestant);
 
-//events routes
+//----------------------events routes
 router.post(
   "/createEvent",
   upload.single("image"),
@@ -256,6 +256,17 @@ router.delete("/deleteEvent/:id", Auth, EventController.deleteEvent);
 
 router.patch("/updateEvent/:id", Auth, EventController.editEvent);
 
+//-----Events referrals----
+router.get('/userEventReferrals',Auth, EventController.getAllUserEventReferrals)
+router.get('/userEventReferrals/:eventId',Auth, EventController.getSpecificUserEventReferrals)
+router.get('/userEventReferrals/referral/:id',Auth, EventController.getSingleUserEventReferral)
+
+
+router.post("/UserEventReferral", Auth, EventController.addEventReferral);
+router.put("/userEventReferral", Auth, EventController.updateEventReferral);
+router.delete("/userEventReferral", Auth, EventController.deleteEventReferral);
+
+
 router.post(
   "/createTickets/:id",
   Auth,
@@ -263,11 +274,12 @@ router.post(
   validate,
   TicketController.createTickets
 );
-
 router.get("/getAllTickets/:id", Auth, TicketController.getAllTicketsById);
 
 router.get("/allEvents", EventController.findAllEvents);
 
+
+//-----Trivia
 router.post(
   "/createTrivia",
   Auth,
@@ -303,7 +315,8 @@ router.post("/trivia-answer/:triviaId", TriviaController.answerQuestion);
 
 router.get("/getUserRef", Auth, ReferralController.getReferralByUser);
 
-//form routes
+
+//----------------form routes
 
 router.post(
   "/createForm",

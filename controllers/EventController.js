@@ -10,6 +10,7 @@ const User = require("../models").adminuser;
 const ResetPasswords = require("../models").resetpassword;
 const Profile = require("../models").profile;
 const Event = require("../models").event;
+const EventReferral = require("../models").eventReferral;
 const votingContest = require("../models").votingcontest;
 const awardContest = require("../models").awardContest;
 const awardCategories = require("../models").awardCategories;
@@ -691,3 +692,161 @@ exports.searchJob = async (req, res, next) => {
     return next(error);
   }
 };
+
+//------------------------Event referrals
+
+exports.getAllUserEventReferrals = async (req, res, next) => {
+  try {
+    const _adminuserId = req.user.id;
+    const user = await User.findOne({
+      where: { id: _adminuserId },
+      // include: [
+      //   {
+      //     model: User,
+      //     attributes: {
+      //       exclude: ["password", "createdAt", "updatedAt", "deletedAt"],
+      //     },
+      //   },
+      // ],
+    });
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found",
+      });
+    }
+    const events = await Event.findAll({
+      where: { adminuserId: _adminuserId },
+      include: [
+        {
+          model: EventReferral,
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+        },
+      ],
+    });
+    const eventReferrals = [].concat.apply(
+      [],
+      events.map((item) => item.eventReferrals)
+    );
+    return res.status(200).send(
+      // events,
+      eventReferrals
+    );
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server Error" });
+  }
+};
+exports.getSpecificUserEventReferrals = async (req, res, next) => {
+  try {
+    const _adminuserId = req.user.id;
+    const _eventId = req.params.eventId;
+    const user = await User.findOne({
+      where: { id: _adminuserId },
+      // include: [
+      //   {
+      //     model: User,
+      //     attributes: {
+      //       exclude: ["password", "createdAt", "updatedAt", "deletedAt"],
+      //     },
+      //   },
+      // ],
+    });
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found",
+      });
+    }
+    const events = await Event.findAll({
+      where: { adminuserId: _adminuserId },
+      include: [
+        {
+          model: EventReferral,
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+        },
+      ],
+    });
+    const _eventReferrals = [].concat.apply(
+      [],
+      events.map((item) => item.eventReferrals)
+    );
+    const eventReferrals = _eventReferrals.filter(
+      (item) => item.eventId === _eventId
+    );
+    return res.status(200).send(eventReferrals);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server Error" });
+  }
+};
+exports.getSingleUserEventReferral = async (req, res, next) => {
+  try {
+    const _adminuserId = req.user.id;
+    const referral_id = req.params.id;
+    const user = await User.findOne({
+      where: { id: _adminuserId },
+      // include: [
+      //   {
+      //     model: User,
+      //     attributes: {
+      //       exclude: ["password", "createdAt", "updatedAt", "deletedAt"],
+      //     },
+      //   },
+      // ],
+    });
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found",
+      });
+    }
+    let events = await Event.findAll({
+      where: { adminuserId: _adminuserId },
+    });
+    events = events.map((item) => item.id);
+    console.log("events are....", events);
+    const eventReferral = await EventReferral.findOne({
+      where: { eventId: [...events] },
+    });
+
+    return res.status(200).send(eventReferral);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server Error" });
+  }
+};
+
+exports.addEventReferral = async (req, res, next) => {
+  try {
+    const eventId = req.body.eventId;
+    const name = req.body.name;
+    const email = req.body.email;
+    const referral_code = req.body.referral_code;
+
+    const _event = await Event.findOne({
+      where: { id: eventId },
+    });
+    if (!_event) {
+      return res.status(404).send({
+        message: "Event not found",
+      });
+    }
+    const events = await EventReferral.create({
+      name,
+      email,
+      referral_code,
+      eventId,
+    });
+    return res.status(200).send({
+      events,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server Error" });
+  }
+};
+
+exports.updateEventReferral = async (req, res, next) => {};
+exports.deleteEventReferral = async (req, res, next) => {};

@@ -1,7 +1,6 @@
-
-
-const {nanoid} = require('nanoid');
+const { nanoid } = require("nanoid");
 const { Model } = require("sequelize");
+const { none } = require("../helpers/upload");
 module.exports = (sequelize, DataTypes) => {
   class eventjob extends Model {
     /**
@@ -12,58 +11,71 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       eventjob.belongsTo(models.event, {
-          foreignKey: "eventId"
+        foreignKey: "eventId",
       });
       eventjob.belongsTo(models.adminuser, {
-          foreignKey: "userassignId"
+        foreignKey: "userassignId",
       });
       //event.hasMany(models.eventjob)
     }
   }
   eventjob.init(
     {
-    id: {
+      id: {
         type: DataTypes.STRING(10),
         autoincrement: false,
         allowNull: false,
         primaryKey: true,
-        defaultValue: () => nanoid(10)
-    },
-    eventId:{
-        type: DataTypes.STRING
-    },
-    userassignId:{
-        type: DataTypes.STRING
-    },
-    job_type: {
-        type: DataTypes.STRING,
-    },
-    job_description: {
-        type: DataTypes.TEXT,
-    },
-    budget: {
-        type: DataTypes.STRING,
-        required: true
-    },
-    location:{
-        type: DataTypes.STRING
-    },
-    assign: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
-    },
-    img_id: {
-        type: DataTypes.STRING
+        defaultValue: () => nanoid(10),
       },
-    img_url: {
-    type: DataTypes.STRING
-    },
-
+      eventId: {
+        type: DataTypes.STRING,
+      },
+      userassignId: {
+        type: DataTypes.STRING,
+      },
+      job_type: {
+        type: DataTypes.STRING,
+      },
+      job_description: {
+        type: DataTypes.TEXT,
+      },
+      budget: {
+        type: DataTypes.STRING,
+        required: true,
+      },
+      location: {
+        type: DataTypes.STRING,
+      },
+      assign: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
+      img_id: {
+        type: DataTypes.STRING,
+      },
+      img_url: {
+        type: DataTypes.STRING,
+      },
+      eventCategory: {
+        type: DataTypes.ENUM(
+          "eventdecorators",
+          "photographers",
+          "caterers",
+          "discJockey",
+          "fashionDesigners",
+          "eventPlaners",
+          "invitationsAndPrinting",
+          "makeUpArtist"
+        ),
+        allowNull: true,
+        defaultValue: null,
+      },
     },
     {
       sequelize,
       modelName: "eventjob",
-      timestamps: true
+      timestamps: true,
     }
   );
   return eventjob;

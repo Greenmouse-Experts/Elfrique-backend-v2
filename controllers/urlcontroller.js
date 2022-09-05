@@ -50,17 +50,18 @@ exports.createUrl = async (req, res, next) => {
                         res.status(200).json(url);
                     } else{
                         if(alias){
-                            const shortUrl = `${baseUrl}/${alias}`;
-                            url = new Url({
-                                longUrl,
-                                shortUrl,
-                                urlCode: alias,
-                                userId: req.user.id
-                                //date: new Date()
-                            }); 
-                            await url.save();
-                            res.status(200).json(url);
-                            }else{
+                          // const shortUrl = `${baseUrl}/${alias}`;
+                          const shortUrl = `${frontUrl}/s/${alias}`;
+                          url = new Url({
+                            longUrl,
+                            shortUrl,
+                            urlCode: alias,
+                            userId: req.user.id,
+                            //date: new Date()
+                          });
+                          await url.save();
+                          res.status(200).json(url);
+                        }else{
                             const shortUrl = `${baseUrl}/${urlCode}`;
                             url = new Url({
                                 longUrl,

@@ -2,7 +2,7 @@
   "name": "wakanow_nodejs",
   "version": "1.0.0",
   "description": "Wakanow API wrapper",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "dev": "nodemon app.js"
   },
