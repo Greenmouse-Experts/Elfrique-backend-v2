@@ -11,7 +11,7 @@ exports.createProposal = async (req, res, next) => {
     var newProposal;
     await Proposal.findOne({
       where: {
-        email: req.body.email,
+        email: req.body.email ? req.body.email : "none",
         jobId: req.params.jobId,
       },
     }).then(async (proposal) => {
