@@ -503,7 +503,7 @@ router.get("/search", EventController.searchJob);
 
 //----------------------------------------------Proposal--------------------------------------------------------------------
 
-router.post("/createProposal/:jobId", Auth, createProposal);
+router.post("/createProposal/:jobId", createProposal);
 
 router.get("/getProposalbyuser/:jobId", Auth, getProposalUser);
 
