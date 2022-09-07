@@ -5,7 +5,7 @@ const User = require("../models").adminuser;
 const cloudinary = require("../helpers/cloudinary");
 
 exports.createProposal = async (req, res, next) => {
-  const { description, price } = req.body;
+  // const { description, price } = req.body;
   console.log(req.body);
   try {
     var newProposal;
@@ -23,7 +23,7 @@ exports.createProposal = async (req, res, next) => {
       } else {
         // const description = req.body.description;
         // const price = req.body.price;
-        console.log("body items", req.body);
+        // console.log("body items", req.body);
         if (req.file) {
           const result = await cloudinary.uploader.upload(req.file.path);
           newProposal = await Proposal.create({
@@ -61,7 +61,6 @@ exports.createProposal = async (req, res, next) => {
     console.error(error);
     return next(error);
   }
-    
 };
 
 exports.getProposalUser = async (req, res, next) => {

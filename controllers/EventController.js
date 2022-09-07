@@ -240,7 +240,7 @@ exports.findAllEvents = async (req, res) => {
 
 //------------------------------------------------------------------------------- JOB ------------------------------------------------------------------------------------------------------
 exports.createJob = async (req, res, next) => {
-  let { job_type, job_description, budget } = req.body;
+  let { job_type, job_description, budget, eventCategory } = req.body;
   job_type = job_type.toLowerCase();
   const eventId = req.params.eventId;
   try {
@@ -256,6 +256,7 @@ exports.createJob = async (req, res, next) => {
         job_type,
         job_description,
         budget,
+        eventCategory,
         location: `${event.venue}, ${event.city}, ${event.state}, ${event.country}`,
         img_id: result.public_id,
         img_url: result.secure_url,
