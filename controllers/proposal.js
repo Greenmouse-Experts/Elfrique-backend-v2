@@ -6,10 +6,11 @@ const cloudinary = require("../helpers/cloudinary");
 
 exports.createProposal = async (req, res, next) => {
   const { description, price } = req.body;
+  console.log(req.body);
   try {
     await Proposal.findOne({
       where: {
-        userId: req.user.id,
+        // userId: req.user.id,
         jobId: req.params.jobId,
       },
     }).then(async (proposal) => {
@@ -22,7 +23,7 @@ exports.createProposal = async (req, res, next) => {
         if (req.file) {
           var result = await cloudinary.uploader.upload(req.file.path);
           await Proposal.create({
-            userId: req.user.id,
+            // userId: req.user.id,
             jobId: req.params.jobId,
             description,
             price,
@@ -31,7 +32,7 @@ exports.createProposal = async (req, res, next) => {
           });
         } else {
           await Proposal.create({
-            userId: req.user.id,
+            // userId: req.user.id,
             jobId: req.params.jobId,
             description,
             price,
