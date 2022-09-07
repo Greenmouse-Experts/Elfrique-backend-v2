@@ -834,7 +834,7 @@ exports.addEventReferral = async (req, res, next) => {
     const name = req.body.name;
     const email = req.body.email;
     const referral_code = req.body.referral_code;
-    console.log(req.body);
+    console.log("The body is:", req.body);
     const _event = await Event.findOne({
       where: { id: eventId },
     });
