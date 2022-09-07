@@ -4,90 +4,105 @@ const shortid = require('shortid');
 const parse = require('url-parse')
 require('dotenv').config
 
-exports.GetUrl = async (req, res, next)=>{
-    try{
-        await Url.findOne({ where: {
-            urlCode: `${req.params.code}` 
-        }
-         }).then((url) => {
-            if(url) {
-                return res.redirect(url.longUrl);
-            } else{
-                return res.status(404).json('No url Found');
-            }
-         })
-        
-    }catch(error){
-        console.error(error)
-        return next(error)
-    }
+exports.getShortUrl = async (req, res, next) => {
+  try {
+    await Url.findOne({
+      where: {
+        urlCode: `${req.params.alias}`,
+      },
+    }).then((url) => {
+      if (url) {
+        return res.redirect(url.longUrl);
+      } else {
+        return res.status(404).json("No url Found");
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    return next(error);
+  }
+};
+
+exports.GetUrl = async (req, res, next) => {
+  try {
+    await Url.findOne({
+      where: {
+        urlCode: `${req.params.code}`,
+      },
+    }).then((url) => {
+      if (url) {
+        return res.redirect(url.longUrl);
+      } else {
+        return res.status(404).json("No url Found");
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    return next(error);
+  }
 };
 
 exports.createUrl = async (req, res, next) => {
-    const { longUrl, alias } = req.body;
-    const baseUrl = process.env.BASEURL;
-    const frontUrl = process.env.FRONTURL
+  const { longUrl, alias } = req.body;
+  const baseUrl = process.env.BASEURL;
+  const frontUrl = process.env.FRONTURL;
 
-    if(!validUrl.isUri(baseUrl)){
-        return res.status(401).json('Invalid Base Url')
-    }
+  if (!validUrl.isUri(baseUrl)) {
+    return res.status(401).json("Invalid Base Url");
+  }
 
-    var addr = new parse(longUrl);
-    var addr2 = new parse(frontUrl);
-    
-    const urlCode = shortid.generate();
+  var addr = new parse(longUrl);
+  var addr2 = new parse(frontUrl);
 
-    if(validUrl.isUri(longUrl)){
-        if(addr.hostname === addr2.hostname){
-            try{
-                var url = await Url.findOne({ 
-                    where: {
-                        longUrl: `${longUrl}` ,
-                        userId : req.user.id
-                    }
-                }); 
-                    if(url){
-                        res.status(200).json(url);
-                    } else{
-                        if(alias){
-                          // const shortUrl = `${baseUrl}/${alias}`;
-                          const shortUrl = `${frontUrl}/s/${alias}`;
-                          url = new Url({
-                            longUrl,
-                            shortUrl,
-                            urlCode: alias,
-                            userId: req.user.id,
-                            //date: new Date()
-                          });
-                          await url.save();
-                          res.status(200).json(url);
-                        }else{
-                            const shortUrl = `${baseUrl}/${urlCode}`;
-                            url = new Url({
-                                longUrl,
-                                shortUrl,
-                                urlCode,
-                                userId: req.user.id
-                                //date: new Date()
-                            }); 
-                            await url.save();
-                            res.status(200).json(url);
-                            }
-                        
-                    }
-                
-                
-            }catch(error){
-                console.error(error)
-                return next(error)
-            };
-        }else{
-            res.status(401).json("Other Host not allowed")
+  const urlCode = shortid.generate();
+
+  if (validUrl.isUri(longUrl)) {
+    if (addr.hostname === addr2.hostname) {
+      try {
+        var url = await Url.findOne({
+          where: {
+            longUrl: `${longUrl}`,
+            userId: req.user.id,
+          },
+        });
+        if (url) {
+          res.status(200).json(url);
+        } else {
+          if (alias) {
+            // const shortUrl = `${baseUrl}/${alias}`;
+            const shortUrl = `${frontUrl}/s/${alias}`;
+            url = new Url({
+              longUrl,
+              shortUrl,
+              urlCode: alias,
+              userId: req.user.id,
+              //date: new Date()
+            });
+            await url.save();
+            res.status(200).json(url);
+          } else {
+            const shortUrl = `${frontUrl}/s/${urlCode}`;
+            url = new Url({
+              longUrl,
+              shortUrl,
+              urlCode,
+              userId: req.user.id,
+              //date: new Date()
+            });
+            await url.save();
+            res.status(200).json(url);
+          }
         }
-       
-    } else{
-        res.status(401).json('Invalid Url')
-    };
+      } catch (error) {
+        console.error(error);
+        return next(error);
+      }
+    } else {
+      res.status(401).json("Other Host not allowed");
+    }
+  } else {
+    res.status(401).json("Invalid Url");
+  }
 };
 
 exports.getAllUrlUser = async(req, res, next)=>{
