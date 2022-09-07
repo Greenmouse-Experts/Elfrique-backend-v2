@@ -66,7 +66,8 @@ module.exports = (sequelize, DataTypes) => {
           "fashionDesigners",
           "eventPlaners",
           "invitationsAndPrinting",
-          "makeUpArtist"
+          "makeUpArtist",
+          "others"
         ),
         allowNull: true,
         defaultValue: null,

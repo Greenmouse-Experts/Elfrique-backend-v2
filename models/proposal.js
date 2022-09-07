@@ -51,6 +51,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       email: {
         type: DataTypes.STRING,
+        // defaultValue: "none",
       },
       phone: {
         type: DataTypes.STRING,

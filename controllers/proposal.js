@@ -11,42 +11,41 @@ exports.createProposal = async (req, res, next) => {
     var newProposal;
     await Proposal.findOne({
       where: {
-        // userId: req.user.id,
+        email: req.body.email,
         jobId: req.params.jobId,
       },
-    }).then(async (proposal) => {});
-    // if (proposal) {
-    //   res.status(406).json({
-    //     status: true,
-    //     message: "Bid Created Already",
-    //   });
-    // } else {
-
-    // const description = req.body.description;
-    // const price = req.body.price;
-    console.log("body items", req.body);
-    if (req.file) {
-      const result = await cloudinary.uploader.upload(req.file.path);
-      newProposal = await Proposal.create({
-        // userId: req.user.id,
-        jobId: req.params.jobId,
-        // description: description,
-        // price: price,
-        img_id: result.public_id,
-        img_url: result.secure_url,
-        ...req.body,
-      });
-    } else {
-      newProposal = await Proposal.create({
-        // userId: req.user.id,
-        jobId: req.params.jobId,
-        // description: description,
-        // price: price,
-        ...req.body,
-      });
-    }
-    // }
-    // });
+    }).then(async (proposal) => {
+      if (proposal) {
+        res.status(406).json({
+          status: true,
+          message: "Bid Created Already",
+        });
+      } else {
+        // const description = req.body.description;
+        // const price = req.body.price;
+        console.log("body items", req.body);
+        if (req.file) {
+          const result = await cloudinary.uploader.upload(req.file.path);
+          newProposal = await Proposal.create({
+            // userId: req.user.id,
+            jobId: req.params.jobId,
+            // description: description,
+            // price: price,
+            img_id: result.public_id,
+            img_url: result.secure_url,
+            ...req.body,
+          });
+        } else {
+          newProposal = await Proposal.create({
+            // userId: req.user.id,
+            jobId: req.params.jobId,
+            // description: description,
+            // price: price,
+            ...req.body,
+          });
+        }
+      }
+    });
 
     // var proposal = await Proposal.findOne({
     //   where: {
@@ -62,6 +61,7 @@ exports.createProposal = async (req, res, next) => {
     console.error(error);
     return next(error);
   }
+    
 };
 
 exports.getProposalUser = async (req, res, next) => {
