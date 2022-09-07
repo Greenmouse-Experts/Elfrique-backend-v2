@@ -248,7 +248,7 @@ router.post(
   EventController.createEvents
 );
 
-router.get("/getAllEvents", Auth, EventController.getAllEvents);
+router.get("/getAllUserEvents", Auth, EventController.getAllUserEvents);
 
 router.get("/getSingleEvent/:id", EventController.getSingleEvent);
 
@@ -257,15 +257,29 @@ router.delete("/deleteEvent/:id", Auth, EventController.deleteEvent);
 router.patch("/updateEvent/:id", Auth, EventController.editEvent);
 
 //-----Events referrals----
-router.get('/userEventReferrals',Auth, EventController.getAllUserEventReferrals)
-router.get('/userEventReferrals/:eventId',Auth, EventController.getSpecificUserEventReferrals)
-router.get('/userEventReferrals/referral/:id',Auth, EventController.getSingleUserEventReferral)
-
-
+router.get(
+  "/userEventReferrals",
+  Auth,
+  EventController.getAllUserEventReferrals
+);
+router.get(
+  "/userEventReferrals/:eventId",
+  Auth,
+  EventController.getSpecificUserEventReferrals
+);
+router.get(
+  "/userEventReferrals/referral/:id",
+  Auth,
+  EventController.getSingleUserEventReferral
+);
 router.post("/UserEventReferral", Auth, EventController.addEventReferral);
-router.put("/userEventReferral", Auth, EventController.updateEventReferral);
-router.delete("/userEventReferral", Auth, EventController.deleteEventReferral);
+router.patch("/userEventReferral", Auth, EventController.updateEventReferral);
 
+router.delete(
+  "/userEventReferral/:eventRefId",
+  Auth,
+  EventController.deleteEventReferral
+);
 
 router.post(
   "/createTickets/:id",
@@ -277,7 +291,6 @@ router.post(
 router.get("/getAllTickets/:id", Auth, TicketController.getAllTicketsById);
 
 router.get("/allEvents", EventController.findAllEvents);
-
 
 //-----Trivia
 router.post(
@@ -294,6 +307,14 @@ router.post(
   upload.single("image"),
   Auth,
   TriviaController.addQuestion
+);
+
+//update question
+router.patch(
+  "/updateQuestion/:id",
+  upload.single("image"),
+  Auth,
+  TriviaController.updateQuestions
 );
 
 router.get("/getAllTrivia", Auth, TriviaController.getAllTrivia);
@@ -314,7 +335,6 @@ router.post("/createPlayer/:id", TriviaController.addTriviaPlayer);
 router.post("/trivia-answer/:triviaId", TriviaController.answerQuestion);
 
 router.get("/getUserRef", Auth, ReferralController.getReferralByUser);
-
 
 //----------------form routes
 
@@ -369,7 +389,7 @@ router.get("/getAllUsers", Auth, SuperAdminController.getAllUsers);
 
 router.get("/getAllContests", Auth, SuperAdminController.getAllContest);
 
-router.get("/getEvents", Auth, SuperAdminController.getAllEvents);
+router.get("/getAllEvents", Auth, SuperAdminController.getAllEvents);
 
 router.get("/getAllRef", Auth, ReferralController.getUserReferrals);
 
@@ -458,7 +478,7 @@ router.put(
 
 router.put("/updatejob/:jobId", Auth, EventController.updateJob);
 
-router.get("/getjob/:id", Auth, EventController.getJob);
+router.get("/getjob/:id", EventController.getJob);
 
 router.get("/getAllJob", EventController.getAllJob);
 

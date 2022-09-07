@@ -60,7 +60,7 @@ exports.createEvents = async (req, res) => {
   }
 };
 
-exports.getAllEvents = async (req, res) => {
+exports.getAllUserEvents = async (req, res) => {
   try {
     const adminuserId = req.user.id;
     const profile = await Profile.findOne({
@@ -80,7 +80,7 @@ exports.getAllEvents = async (req, res) => {
       });
     }
     const events = await Event.findAll({
-      where: { adminuserId },
+      where: { adminuserId: adminuserId },
       include: [
         {
           model: eventsTicket,
@@ -848,5 +848,86 @@ exports.addEventReferral = async (req, res, next) => {
   }
 };
 
-exports.updateEventReferral = async (req, res, next) => {};
-exports.deleteEventReferral = async (req, res, next) => {};
+exports.updateEventReferral = async (req, res, next) => {
+  try {
+    const _adminuserId = req.user.id;
+    // const referral_id = req.params.id;
+    const user = await User.findOne({
+      where: { id: _adminuserId },
+      // include: [
+      //   {
+      //     model: User,
+      //     attributes: {
+      //       exclude: ["password", "createdAt", "updatedAt", "deletedAt"],
+      //     },
+      //   },
+      // ],
+    });
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found",
+      });
+    }
+    const eventRef = await EventReferral.update(
+      req.body,
+      // {
+      //   name: req.body.name,
+      //   email: req.body.email,
+      //   referral_code: req.body.referral_code,
+      // },
+      {
+        where: { id: req.body.id },
+      }
+    );
+
+    return res.status(200).send({
+      message: "Event Referral updated successfully",
+      eventRef,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server Error" });
+  }
+};
+
+exports.deleteEventReferral = async (req, res, next) => {
+  try {
+    const _adminuserId = req.user.id;
+    const eventRefId = await req.params.eventRefId;
+    const user = await User.findOne({
+      where: { id: _adminuserId },
+      // include: [
+      //   {
+      //     model: User,
+      //     attributes: {
+      //       exclude: ["password", "createdAt", "updatedAt", "deletedAt"],
+      //     },
+      //   },
+      // ],
+    });
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found",
+      });
+    }
+    const eventRef = await EventReferral.destroy(
+      // req.body,
+      // {
+      //   name: req.body.name,
+      //   email: req.body.email,
+      //   referral_code: req.body.referral_code,
+      // },
+      {
+        where: { id: eventRefId },
+      }
+    );
+
+    return res.status(200).send({
+      message: "Event Referral deleted successfully",
+      eventRef,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server Error" });
+  }
+};
