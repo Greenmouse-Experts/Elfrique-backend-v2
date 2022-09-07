@@ -24,30 +24,42 @@ module.exports = (sequelize, DataTypes) => {
   }
   proposal.init(
     {
-        id: {
-            type: DataTypes.STRING(10),
-            autoincrement: false,
-            allowNull: false,
-            primaryKey: true,
-            defaultValue: () => nanoid(10)
-        },
-        description: {
-            type: DataTypes.TEXT
-        },
-        price: {
-            type: DataTypes.STRING
-        },
-        img_id: {
-            type: DataTypes.STRING
-        },
-        img_url:{
-            type: DataTypes.STRING
-        }
+      id: {
+        type: DataTypes.STRING(10),
+        autoincrement: false,
+        allowNull: false,
+        primaryKey: true,
+        defaultValue: () => nanoid(10),
+      },
+      description: {
+        type: DataTypes.TEXT,
+      },
+      price: {
+        type: DataTypes.STRING,
+      },
+      img_id: {
+        type: DataTypes.STRING,
+      },
+      img_url: {
+        type: DataTypes.STRING,
+      },
+      firstname: {
+        type: DataTypes.STRING,
+      },
+      surname: {
+        type: DataTypes.STRING,
+      },
+      email: {
+        type: DataTypes.STRING,
+      },
+      phone: {
+        type: DataTypes.STRING,
+      },
     },
     {
       sequelize,
       modelName: "proposal",
-      timestamps: true
+      timestamps: true,
     }
   );
   return proposal;

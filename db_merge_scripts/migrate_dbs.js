@@ -14,6 +14,7 @@ const {
   ads,
   eventjob,
   eventReferral,
+  proposal,
 
   payout,
   triviaplayer,
@@ -44,6 +45,7 @@ module.exports = async (req, res) => {
   notifications.sync({ alter: true });
   ads.sync({ alter: true });
   eventReferral.sync({ alter: true });
+  proposal.sync({ alter: true });
 
   console.log("Added models");
 };
