@@ -8,48 +8,50 @@ exports.createProposal = async (req, res, next) => {
   const { description, price } = req.body;
   console.log(req.body);
   try {
+    var result;
     await Proposal.findOne({
       where: {
         // userId: req.user.id,
         jobId: req.params.jobId,
       },
     }).then(async (proposal) => {
-      if (proposal) {
-        res.status(406).json({
-          status: true,
-          message: "Bid Created Already",
+      // if (proposal) {
+      //   res.status(406).json({
+      //     status: true,
+      //     message: "Bid Created Already",
+      //   });
+      // } else {
+
+      if (req.file) {
+        result = await cloudinary.uploader.upload(req.file.path);
+        await Proposal.create({
+          // userId: req.user.id,
+          jobId: req.params.jobId,
+          description,
+          price,
+          img_id: result.public_id,
+          img_url: result.secure_url,
         });
       } else {
-        if (req.file) {
-          var result = await cloudinary.uploader.upload(req.file.path);
-          await Proposal.create({
-            // userId: req.user.id,
-            jobId: req.params.jobId,
-            description,
-            price,
-            img_id: result.public_id,
-            img_url: result.secure_url,
-          });
-        } else {
-          await Proposal.create({
-            // userId: req.user.id,
-            jobId: req.params.jobId,
-            description,
-            price,
-          });
-        }
+        result = await Proposal.create({
+          // userId: req.user.id,
+          jobId: req.params.jobId,
+          description,
+          price,
+        });
       }
+      // }
     });
 
-    var proposal = await Proposal.findOne({
-      where: {
-        userId: req.user.id,
-      },
-    });
+    // var proposal = await Proposal.findOne({
+    //   where: {
+    //     userId: req.user.id,
+    //   },
+    // });
     return res.status(201).json({
       status: true,
       message: "Bid Successfully Created",
-      data: proposal,
+      data: result,
     });
   } catch (error) {
     console.error(error);

@@ -13,12 +13,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      proposal.belongsTo(models.eventjob,{
-          foreignKey: "jobId"
+      proposal.belongsTo(models.eventjob, {
+        foreignKey: "jobId",
       });
-      proposal.belongsTo(models.adminuser, {
-          foreignKey: "userId"
-      });
+      // proposal.belongsTo(models.adminuser, {
+      //     foreignKey: "userId"
+      // });
       //event.hasMany(models.eventjob)
     }
   }
