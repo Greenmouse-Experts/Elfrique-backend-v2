@@ -821,6 +821,15 @@ exports.getSingleUserEventReferral = async (req, res, next) => {
 
 exports.addEventReferral = async (req, res, next) => {
   try {
+    const _adminuserId = req.user.id;
+    const user = await User.findOne({
+      where: { id: _adminuserId },
+    });
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found",
+      });
+    }
     const eventId = req.body.eventId;
     const name = req.body.name;
     const email = req.body.email;
