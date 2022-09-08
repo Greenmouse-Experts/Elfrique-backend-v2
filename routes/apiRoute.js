@@ -531,7 +531,7 @@ router.delete("/deleteAds/:id", Auth, deleteAds);
 
 router.route("/url/shorten").post(Auth, urlControl.createUrl);
 
-router.get("/url/getShortUrl/:alias", urlControl.getShortUrl);
+router.get("/url/getShortUrl", urlControl.getShortUrl);
 router.get("/url/getallUrl", Auth, urlControl.getAllUrlUser);
 
 router.delete("/url/deleteUrl/:id", Auth, urlControl.deleteUrlUser);

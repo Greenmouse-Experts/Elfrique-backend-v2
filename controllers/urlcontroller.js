@@ -8,7 +8,7 @@ exports.getShortUrl = async (req, res, next) => {
   try {
     await Url.findOne({
       where: {
-        urlCode: `${req.params.alias}`,
+        urlCode: `${req.query.alias}`,
       },
     }).then((url) => {
       if (url) {
