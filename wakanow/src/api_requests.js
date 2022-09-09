@@ -48,7 +48,7 @@ exports.flightSearch = (
   })
     .then((response) => {
 
-      console.log(response.data);
+      console.log(response);
       return response.data;
     })
     .catch((err) => console.log(err));
