@@ -36,6 +36,10 @@ module.exports = (sequelize, DataTypes) => {
       fee: DataTypes.STRING,
       packagestatus: DataTypes.STRING,
       image: DataTypes.STRING,
+      status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: 1,
+      },
     },
     {
       sequelize,

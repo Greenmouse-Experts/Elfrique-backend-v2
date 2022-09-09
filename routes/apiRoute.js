@@ -507,7 +507,7 @@ router.get("/search", EventController.searchJob);
 
 router.post("/createProposal/:jobId", createProposal);
 
-router.get("/getProposalbyuser/:jobId", Auth, getProposalUser);
+router.get("/getProposalbyuser", getProposalUser);//for users to view their proposals
 
 router.get("/getProposalbyseller/:jobId/:userId", Auth, getProposalSeller);
 

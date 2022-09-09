@@ -34,6 +34,10 @@ module.exports = (sequelize, DataTypes) => {
       shortUrl: {
         type: DataTypes.STRING,
       },
+      status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: 1,
+      },
     },
     {
       sequelize,

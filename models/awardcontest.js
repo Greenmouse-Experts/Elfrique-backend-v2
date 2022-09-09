@@ -37,6 +37,10 @@ module.exports = (sequelize, DataTypes) => {
       packagestatus: DataTypes.STRING,
       categories: DataTypes.STRING,
       image: DataTypes.STRING,
+      status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: 1,
+      },
     },
     {
       sequelize,

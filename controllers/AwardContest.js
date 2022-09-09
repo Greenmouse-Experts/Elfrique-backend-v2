@@ -397,6 +397,9 @@ exports.getSingleNominee = async (req, res) => {
 exports.findAllAwards = async (req, res) => {
   try {
     const awards = await awardContest.findAll({
+      where: {
+        status: true,
+      },
       include: [
         {
           model: awardCategories,

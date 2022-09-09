@@ -24,10 +24,14 @@ module.exports = (sequelize, DataTypes) => {
         autoincrement: false,
         allowNull: false,
         primaryKey: true,
-        defaultValue: () => nanoid(10)
-    },
+        defaultValue: () => nanoid(10),
+      },
       name: DataTypes.STRING,
       description: DataTypes.TEXT,
+      status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: 1,
+      },
     },
     {
       sequelize,

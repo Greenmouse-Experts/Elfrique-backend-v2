@@ -47,8 +47,9 @@ exports.flightSearch = (
     Authorization: `Bearer ${token}`,
   })
     .then((response) => {
+
+      console.log(response.data);
       return response.data;
-      // console.log(response.data);
     })
     .catch((err) => console.log(err));
 };

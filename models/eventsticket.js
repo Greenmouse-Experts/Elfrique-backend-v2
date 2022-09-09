@@ -29,7 +29,10 @@ module.exports = (sequelize, DataTypes) => {
       salesend: DataTypes.DATE,
       eventname: DataTypes.STRING,
       booked: DataTypes.STRING,
-      status: DataTypes.BOOLEAN,
+      status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: 1,
+      },
     },
     {
       sequelize,

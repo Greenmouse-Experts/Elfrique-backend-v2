@@ -51,6 +51,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
+      status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: 1,
+      },
       img_id: {
         type: DataTypes.STRING,
       },

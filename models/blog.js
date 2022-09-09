@@ -47,6 +47,10 @@ module.exports = (sequelize, DataTypes) => {
       img_url: {
         type: DataTypes.TEXT,
       },
+      status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: 1,
+      },
     },
     {
       sequelize,

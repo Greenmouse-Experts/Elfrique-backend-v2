@@ -20,15 +20,19 @@ module.exports = (sequelize, DataTypes) => {
         autoincrement: false,
         allowNull: false,
         primaryKey: true,
-        defaultValue: () => nanoid(10)
-    },
+        defaultValue: () => nanoid(10),
+      },
       fullname: DataTypes.STRING,
       image: DataTypes.STRING,
       contestantnumber: DataTypes.STRING,
       about: DataTypes.TEXT,
       voteCount: {
         type: DataTypes.INTEGER,
-        defaultValue: 0
+        defaultValue: 0,
+      },
+      status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: 1,
       },
     },
     {

@@ -82,6 +82,10 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
       paranoid: true,
       tableName: "eventforms",
+      status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: 1,
+      },
     }
   );
   return eventform;

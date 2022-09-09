@@ -64,11 +64,13 @@ exports.createProposal = async (req, res, next) => {
 };
 
 exports.getProposalUser = async (req, res, next) => {
+  const userEmail = req.query.email;
+  const userPhone = req.query.phone;
   try {
     await Proposal.findAll({
       where: {
-        jobId: req.params.jobId,
-        userId: req.user.id,
+        email: userEmail,
+        phone: userPhone,
       },
       include: [
         {
@@ -100,6 +102,7 @@ exports.getProposalUser = async (req, res, next) => {
     return next(error);
   }
 };
+
 exports.getProposalSeller = async (req, res, next) => {
   try {
     await Proposal.findAll({

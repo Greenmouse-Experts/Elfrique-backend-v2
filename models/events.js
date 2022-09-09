@@ -39,6 +39,10 @@ module.exports = (sequelize, DataTypes) => {
       paymentgateway: DataTypes.STRING,
       timezone: DataTypes.STRING,
       category: DataTypes.STRING,
+      status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: 1,
+      },
     },
     {
       sequelize,

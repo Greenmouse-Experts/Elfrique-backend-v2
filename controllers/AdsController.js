@@ -109,7 +109,11 @@ exports.getAdbyUser = async (req, res, next) => {
 
 exports.getAllAds = async (req, res, next) => {
   try {
-    await Ads.findAll().then((ads) => {
+    await Ads.findAll({
+      where: {
+        status: true,
+      },
+    }).then((ads) => {
       if (ads) {
         res.status(200).json({
           status: true,

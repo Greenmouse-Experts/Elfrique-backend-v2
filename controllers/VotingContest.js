@@ -259,6 +259,7 @@ exports.getAllContestants = async (req, res) => {
     const contestants = await contestant.findAll({
       where: {
         votingContestId: req.params.id,
+        status: true,
       },
     });
     return res.status(200).send({
@@ -387,6 +388,9 @@ exports.addInfo = async (req, res) => {
 exports.findAllVoteContest = async (req, res) => {
   try {
     const voteContests = await votingContest.findAll({
+      where: {
+        status: true,
+      },
       include: [
         {
           model: contestant,
