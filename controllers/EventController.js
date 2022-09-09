@@ -414,12 +414,22 @@ exports.getAllJob = async (req, res, next) => {
   }
 };
 
-/*exports.getAllJobSeller = async (req, res, next) => {
+exports.getAllJobSeller = async (req, res, next) => {
+  console.log("userrrr\n\n", req.user);
   try {
-    await Eventjob.findAll({ 
-      where:{
-        userId: req.user.id
-    },
+    const _adminuserId = req.user.id;
+    const user = await User.findOne({
+      where: { id: _adminuserId },
+    });
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found",
+      });
+    }
+    await Eventjob.findAll({
+      where: {
+        userassignId: user.id,
+      },
       include: [
         {
           model: Event,
@@ -458,7 +468,7 @@ exports.getAllJob = async (req, res, next) => {
     console.error(error);
     return next(error);
   }
-};*/
+};
 
 exports.getAllJobEvent = async (req, res, next) => {
   try {

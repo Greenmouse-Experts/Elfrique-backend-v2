@@ -443,7 +443,7 @@ exports.voteAContestant = async (req, res) => {
       req.body;
 
     if (type === "free") {
-      await Contestant.increment("voteCount", { by: parseInt(numberOfVote) });
+      await Contestant.increment("voteCount", { by: 1 });
       return res.status(200).send({
         status: true,
         message: "Your Vote has been Successfully Submitted",

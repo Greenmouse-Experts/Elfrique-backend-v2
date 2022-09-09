@@ -75,7 +75,7 @@ exports.getAllContest = async (req, res) => {
         message: "Only SuperAdmin can access this route",
       });
     }
-
+console.log("\n\nsuperadmiiiin\n\n");
     const contest = await VoteContestController.findAllVoteContest(req, res);
 
     return contest;

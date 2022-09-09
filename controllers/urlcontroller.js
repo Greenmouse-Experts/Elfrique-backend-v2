@@ -106,6 +106,7 @@ exports.createUrl = async (req, res, next) => {
 };
 
 exports.getAllUrlUser = async(req, res, next)=>{
+    console.log("hosst", req.get("client"), req.originalUrl);
     try {
         await Url.findAll({
             where: {

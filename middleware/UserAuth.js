@@ -8,7 +8,6 @@ module.exports = function (req, res, next) {
       message: "Access Denied",
     });
   }
-
   // verify token
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);

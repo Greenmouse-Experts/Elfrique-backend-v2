@@ -482,6 +482,8 @@ router.get("/getjob/:id", EventController.getJob);
 
 router.get("/getAllJob", EventController.getAllJob);
 
+router.get("/getAllSellerJob", Auth, EventController.getAllJobSeller);
+
 router.get("/getAlljob/:eventId", Auth, EventController.getAllJobEvent);
 
 router.delete("/deletejob/:eventId/:id", Auth, EventController.deleteJob);
