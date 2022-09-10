@@ -11,7 +11,6 @@ exports.flightAirportsList = async (req, res) => {
 };
 
 exports.flightSearch = async (req, res) => {
-  console.log("body is:", req.body);
   try {
     const {
       searchType,
@@ -21,6 +20,7 @@ exports.flightSearch = async (req, res) => {
       from,
       to,
       departureDate,
+      returnDate,
       currency,
       ticketclass,
     } = req.body;
@@ -32,6 +32,7 @@ exports.flightSearch = async (req, res) => {
       from,
       to,
       departureDate,
+      returnDate,
       currency,
       ticketclass
     );

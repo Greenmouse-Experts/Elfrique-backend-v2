@@ -24,23 +24,32 @@ exports.flightSearch = (
   from,
   to,
   departureDate,
+  returnDate,
   currency,
   ticketclass
 ) => {
-  payload = {
+  const itineraries = [
+    {
+      Departure: from,
+      Destination: to,
+      DepartureDate: departureDate,
+    },
+  ];
+  returnDate && (searchType === "Multidestination" || searchType === "Return")
+    ? itineraries.push({
+        Departure: to,
+        Destination: from,
+        DepartureDate: returnDate,
+      })
+    : "";
+  const payload = {
     FlightSearchType: searchType,
     Adults: adultsCount,
     Children: childrenCount,
     Infants: infantCount,
     Ticketclass: ticketclass,
     TargetCurrency: currency,
-    Itineraries: [
-      {
-        Departure: from,
-        Destination: to,
-        DepartureDate: departureDate,
-      },
-    ],
+    Itineraries: itineraries,
   };
   return AxiosPost(base_url + "/api/flight/search", payload, {
     "Content-Type": "application/json",

@@ -72,6 +72,7 @@ class Wakanow {
     from,
     to,
     departureDate,
+    returnDate,
     currency,
     ticketclass
   ) {
@@ -101,6 +102,7 @@ class Wakanow {
       from,
       to,
       departureDate,
+      returnDate,
       currency,
       ticketclass
     );
