@@ -157,3 +157,36 @@ exports.getAllTrivia = async (req, res) => {
     });
   }
 };
+
+exports.getAllShortlUrl = async (req, res, next) => {
+  try {
+    const adminId = req.user.id;
+    const superadmin = await User.findOne({
+      where: {
+        id: adminId,
+      },
+    });
+    if (superadmin.role !== "admin") {
+      return res.status(404).send({
+        message: "Only SuperAdmin can access this route",
+      });
+    }
+
+    await Url.findAll({}).then((url) => {
+      if (url) {
+        res.status(200).json({
+          status: true,
+          data: url,
+        });
+      } else {
+        res.status(404).json({
+          status: false,
+          message: "No URL Found",
+        });
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    return next(error);
+  }
+};

@@ -396,6 +396,7 @@ router.get("/getAllRef", Auth, ReferralController.getUserReferrals);
 router.get("/getForms", Auth, SuperAdminController.getAllForms);
 
 router.get("/getTrivias", Auth, SuperAdminController.getAllTrivia);
+router.get("/getAllShortUrl", Auth, SuperAdminController.getAllShortUrl);
 
 //-----
 

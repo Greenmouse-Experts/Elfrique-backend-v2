@@ -106,31 +106,32 @@ console.log("host nammmemes\n\n\n", addr, addr2);
   }
 };
 
-exports.getAllUrlUser = async(req, res, next)=>{
-    console.log("hosst", req.get("client"), req.originalUrl);
-    try {
-        await Url.findAll({
-            where: {
-                userId: req.user.id
-            }
-        }).then((url) =>{
-            if(url){
-                res.status(200).json({
-                    status: true,
-                    data: url
-                })
-            }else{
-                res.status(404).json({
-                    status: false,
-                    message: "No URL Found"
-                })
-            }
-        })
-    } catch (error) {
-        console.error(error)
-        return next(error)
-    }
-}
+exports.getAllUrlUser = async (req, res, next) => {
+  try {
+    await Url.findAll({
+      where: {
+        userId: req.user.id,
+      },
+    }).then((url) => {
+      if (url) {
+        res.status(200).json({
+          status: true,
+          data: url,
+        });
+      } else {
+        res.status(404).json({
+          status: false,
+          message: "No URL Found",
+        });
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    return next(error);
+  }
+};
+
+
 
 exports.deleteUrlUser = async(req, res, next)=>{
     try {
