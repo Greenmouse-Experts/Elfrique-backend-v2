@@ -9,7 +9,7 @@ const ResetPasswords = require("../models").resetpassword;
 const profile = require("../models").profile;
 const SuperAdmin = require("../models").superadmin;
 const VoteContestController = require("../controllers/VotingContest");
-
+const Url = require("../models").url;
 const AwardContestController = require("../controllers/AwardContest");
 
 const EventController = require("../controllers/EventController");
