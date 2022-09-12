@@ -564,7 +564,7 @@ router.get("/getVendorProfileUser", Auth, getProfileUser);
 
 //--------------------------------------Transactions--------------------------------------------------------------------
 router.get(
-  "/getAllTransactions",
+  "/getAllUserTransactions",
   Auth,
   transactionController.transactionHistoryByUser
 );
