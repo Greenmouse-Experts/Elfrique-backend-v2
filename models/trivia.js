@@ -63,6 +63,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM("once", "unlimited"),
         defaultValue: "unlimited",
       },
+      paymentgateway: DataTypes.STRING,
+      amount: {
+        type: DataTypes.INTEGER,
+        defaultValue: 1,
+      },
       status: {
         type: DataTypes.BOOLEAN,
         defaultValue: 1,

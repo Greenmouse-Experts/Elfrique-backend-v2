@@ -330,6 +330,7 @@ exports.addTriviaPlayer = async (req, res) => {
 };
 
 exports.getSingleTrivia = async (req, res) => {
+  console.log("Getttiiiinnnngggg");
   try {
     const trivia = await Trivia.findOne({
       where: { id: req.params.id },
