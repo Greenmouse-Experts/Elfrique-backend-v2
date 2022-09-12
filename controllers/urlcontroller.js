@@ -47,6 +47,7 @@ exports.createUrl = async (req, res, next) => {
   const baseUrl = process.env.BASEURL;
   const frontUrl = process.env.FRONTURL;
 
+
   if (!validUrl.isUri(baseUrl)) {
     return res.status(401).json("Invalid Base Url");
   }
@@ -55,7 +56,7 @@ exports.createUrl = async (req, res, next) => {
   var addr2 = new parse(frontUrl);
 
   const urlCode = shortid.generate();
-
+console.log("host nammmemes\n\n\n", addr, addr2);
   if (validUrl.isUri(longUrl)) {
     if (addr.hostname === addr2.hostname) {
       try {

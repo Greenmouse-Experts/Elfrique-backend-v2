@@ -66,7 +66,7 @@ module.exports = (sequelize, DataTypes) => {
       paymentgateway: DataTypes.STRING,
       amount: {
         type: DataTypes.INTEGER,
-        defaultValue: 1,
+        defaultValue: 0,
       },
       status: {
         type: DataTypes.BOOLEAN,
