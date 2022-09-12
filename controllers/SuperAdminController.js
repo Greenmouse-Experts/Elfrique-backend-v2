@@ -158,7 +158,7 @@ exports.getAllTrivia = async (req, res) => {
   }
 };
 
-exports.getAllShortlUrl = async (req, res, next) => {
+exports.getAllShortUrl = async (req, res, next) => {
   try {
     const adminId = req.user.id;
     const superadmin = await User.findOne({
