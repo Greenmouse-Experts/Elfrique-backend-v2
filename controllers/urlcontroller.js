@@ -58,49 +58,49 @@ exports.createUrl = async (req, res, next) => {
   const urlCode = shortid.generate();
 console.log("host nammmemes\n\n\n", addr, addr2);
   if (validUrl.isUri(longUrl)) {
-    if (addr.hostname === addr2.hostname) {
-      try {
-        var url = await Url.findOne({
-          where: {
-            longUrl: `${longUrl}`,
+    // if (addr.hostname === addr2.hostname) {
+    try {
+      var url = await Url.findOne({
+        where: {
+          longUrl: `${longUrl}`,
+          userId: req.user.id,
+        },
+      });
+      if (url) {
+        res.status(200).json(url);
+      } else {
+        if (alias) {
+          // const shortUrl = `${baseUrl}/${alias}`;
+          const shortUrl = `${frontUrl}/s/${alias}`;
+          url = new Url({
+            longUrl,
+            shortUrl,
+            urlCode: alias,
             userId: req.user.id,
-          },
-        });
-        if (url) {
+            //date: new Date()
+          });
+          await url.save();
           res.status(200).json(url);
         } else {
-          if (alias) {
-            // const shortUrl = `${baseUrl}/${alias}`;
-            const shortUrl = `${frontUrl}/s/${alias}`;
-            url = new Url({
-              longUrl,
-              shortUrl,
-              urlCode: alias,
-              userId: req.user.id,
-              //date: new Date()
-            });
-            await url.save();
-            res.status(200).json(url);
-          } else {
-            const shortUrl = `${frontUrl}/s/${urlCode}`;
-            url = new Url({
-              longUrl,
-              shortUrl,
-              urlCode,
-              userId: req.user.id,
-              //date: new Date()
-            });
-            await url.save();
-            res.status(200).json(url);
-          }
+          const shortUrl = `${frontUrl}/s/${urlCode}`;
+          url = new Url({
+            longUrl,
+            shortUrl,
+            urlCode,
+            userId: req.user.id,
+            //date: new Date()
+          });
+          await url.save();
+          res.status(200).json(url);
         }
-      } catch (error) {
-        console.error(error);
-        return next(error);
       }
-    } else {
-      res.status(401).json("Other Host not allowed");
+    } catch (error) {
+      console.error(error);
+      return next(error);
     }
+    // } else {
+    //   res.status(401).json("Other Host not allowed");
+    // }
   } else {
     res.status(401).json("Invalid Url");
   }
