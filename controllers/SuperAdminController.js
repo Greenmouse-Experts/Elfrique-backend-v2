@@ -172,7 +172,7 @@ exports.getAllShortUrl = async (req, res, next) => {
       });
     }
 
-    await Url.findAll({}).then((url) => {
+    await Url.findAll().then((url) => {
       if (url) {
         res.status(200).json({
           status: true,
