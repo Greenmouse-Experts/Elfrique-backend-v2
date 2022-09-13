@@ -272,6 +272,15 @@ exports.getAllContestants = async (req, res) => {
 };
 exports.getUserContestants = async (req, res) => {
   try {
+    const _adminuserId = req.user.id;
+    const user = await User.findOne({
+      where: { id: _adminuserId },
+    });
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found",
+      });
+    }
     const voteContest = await votingContest.findOne({
       where: { id: req.params.id },
     });
@@ -297,9 +306,19 @@ exports.getUserContestants = async (req, res) => {
 
 exports.getAllUserContests = async (req, res) => {
   try {
+    const _adminuserId = req.user.id;
+    const user = await User.findOne({
+      where: { id: _adminuserId },
+    });
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found",
+      });
+    }
     const voteContests = await votingContest.findAll({
       where: {
         status: true,
+        adminuserId: user.id,
       },
       include: [
         {
