@@ -270,6 +270,55 @@ exports.getAllContestants = async (req, res) => {
     return res.status(500).send({ message: "Server Error" });
   }
 };
+exports.getUserContestants = async (req, res) => {
+  try {
+    const voteContest = await votingContest.findOne({
+      where: { id: req.params.id },
+    });
+    if (!voteContest) {
+      return res.status(404).send({
+        message: "Contest not found",
+      });
+    }
+    const contestants = await contestant.findAll({
+      where: {
+        votingContestId: req.params.id,
+        status: true,
+      },
+    });
+    return res.status(200).send({
+      contestants,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server Error" });
+  }
+};
+
+exports.getAllUserContests = async (req, res) => {
+  try {
+    const voteContest = await votingContest.findOne({
+      where: { id: req.params.id },
+    });
+    if (!voteContest) {
+      return res.status(404).send({
+        message: "Contest not found",
+      });
+    }
+    const contestants = await contestant.findAll({
+      where: {
+        votingContestId: req.params.id,
+        status: true,
+      },
+    });
+    return res.status(200).send({
+      contestants,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server Error" });
+  }
+};
 
 exports.getSingleContestant = async (req, res) => {
   try {

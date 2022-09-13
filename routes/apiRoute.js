@@ -196,6 +196,16 @@ router.post(
   upload.single("image"),
   VoteContestController.createContestants
 );
+router.get(
+  "/getallUserContests",
+  Auth,
+  VoteContestController.getAllUserContests
+);
+router.get(
+  "/getUserContestants/:contestId",
+  Auth,
+  VoteContestController.getUserContestants
+);
 
 router.get("/getallContestant/:id", VoteContestController.getAllContestants);
 
