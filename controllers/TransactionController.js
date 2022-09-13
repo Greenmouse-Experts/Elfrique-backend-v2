@@ -50,6 +50,7 @@ exports.verifyTransaction = async (req, res) => {
 };
 
 exports.makeTransaction = (req, res) => {
+  console.log("your body is:", req.body);
   const transaction = {
     payer_name: req.body.payer_name,
     email: req.body.email,

@@ -19,8 +19,8 @@ module.exports = (sequelize, DataTypes) => {
         autoincrement: false,
         allowNull: false,
         primaryKey: true,
-        defaultValue: () => nanoid(10)
-    },
+        defaultValue: () => nanoid(10),
+      },
       admin_id: {
         allowNull: false,
         type: DataTypes.STRING,
@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       email: {
+        allowNull: true,
+        type: DataTypes.STRING,
+      },
+      currency: {
         allowNull: true,
         type: DataTypes.STRING,
       },

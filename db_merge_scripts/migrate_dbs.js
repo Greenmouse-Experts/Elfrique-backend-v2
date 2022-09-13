@@ -20,6 +20,7 @@ const {
   awardNominees,
   blog,
   flightBook,
+  transaction,
 
   payout,
   triviaplayer,
@@ -55,7 +56,8 @@ module.exports = async (req, res) => {
   awardContest.sync({ alter: true });
   awardNominees.sync({ alter: true });
   blog.sync({ alter: true });
-  flightBook.sync({ alter: true });
+  // flightBook.sync({ alter: true });
+  transaction.sync({ alter: true });
 
   console.log("Added models");
 };
