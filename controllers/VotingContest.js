@@ -297,22 +297,36 @@ exports.getUserContestants = async (req, res) => {
 
 exports.getAllUserContests = async (req, res) => {
   try {
-    const voteContest = await votingContest.findOne({
-      where: { id: req.params.id },
-    });
-    if (!voteContest) {
-      return res.status(404).send({
-        message: "Contest not found",
-      });
-    }
-    const contestants = await contestant.findAll({
+    const voteContests = await votingContest.findAll({
       where: {
-        votingContestId: req.params.id,
         status: true,
       },
+      include: [
+        {
+          model: contestant,
+          as: "contestants",
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+        },
+        {
+          model: User,
+          include: [
+            {
+              model: Profile,
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "deletedAt"],
+              },
+            },
+          ],
+          attributes: {
+            exclude: ["password", "createdAt", "updatedAt", "deletedAt"],
+          },
+        },
+      ],
     });
     return res.status(200).send({
-      contestants,
+      voteContests,
     });
   } catch (error) {
     console.log(error);
