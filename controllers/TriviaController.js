@@ -301,7 +301,8 @@ exports.addTriviaPlayer = async (req, res) => {
     const player = await Player.findOne({
       where: { email: req.body.email, triviaId: req.params.id },
     });
-    if (!player) {
+
+    if (!player || trivia.numberoftimes === "unlimited") {
       newPlayer = await Player.create({
         email: req.body.email,
         name: req.body.name,

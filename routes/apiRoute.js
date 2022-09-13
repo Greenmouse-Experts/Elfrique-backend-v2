@@ -578,6 +578,21 @@ router.get(
   Auth,
   transactionController.transactionHistoryByUser
 );
+// router.get(//superadmin
+//   "/getTransactionsByService",
+//   Auth,
+//   transactionController.transactionHistoryByService
+// );
+// router.get(//organiser
+//   "/getUserTransactionsByService",
+//   Auth,
+//   transactionController.transactionHistoryByService
+// );
+router.get(
+  "/getAllUserTransactions",
+  Auth,
+  transactionController.transactionHistoryByUser
+);
 
 router.post("/makeTransaction", transactionController.makeTransaction);
 

@@ -58,7 +58,7 @@ exports.makeTransaction = (req, res) => {
     category: req.body.category,
     reference: req.body.reference,
     amount: req.body.amount,
-    currency: request.body.currency,
+    currency: req.body.currency,
     phone_no: req.body.phone_no,
     product_title: req.body.product_title,
     product_id: req.body.product_id,
