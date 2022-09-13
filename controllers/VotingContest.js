@@ -282,7 +282,7 @@ exports.getUserContestants = async (req, res) => {
       });
     }
     const voteContest = await votingContest.findOne({
-      where: { id: req.params.id },
+      where: { id: req.params.contestId },
     });
     if (!voteContest) {
       return res.status(404).send({
@@ -291,7 +291,7 @@ exports.getUserContestants = async (req, res) => {
     }
     const contestants = await contestant.findAll({
       where: {
-        votingContestId: req.params.id,
+        votingContestId: req.params.contestId,
         status: true,
       },
     });
