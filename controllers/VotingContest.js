@@ -594,12 +594,14 @@ exports.createUserVote = async (req, res) => {
       const numVote = 1;
       await Contestant.increment("voteCount", { by: numVote });
       await contestVote.create({
+        ...req.body,
         numberOfVote: numVote,
         voters_name: fullname,
         payment_method: "free",
         payment_gateway: "free",
         payment_status: "free",
-        ...req.body,
+        amount:0,
+        // ...req.body,
       });
       return res.status(200).send({
         status: true,
@@ -621,12 +623,13 @@ exports.createUserVote = async (req, res) => {
         await Contestant.increment("voteCount", { by: numVote });
         console.log("boooddy", req.body);
         await contestVote.create({
+          ...req.body,
           numberOfVote: numVote,
           voters_name: fullname,
           payment_method: method,
           payment_gateway: method,
           payment_status: type,
-          // ...req.body,
+          //  ...req.body,
         });
         return res.status(200).send({
           status: true,

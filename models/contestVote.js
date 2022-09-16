@@ -36,7 +36,6 @@ module.exports = (sequelize, DataTypes) => {
       //   type: DataTypes.INTEGER,
       //   allowNull: true
       // },
-      date_added: DataTypes.STRING,
       reference: DataTypes.STRING,
       numberOfVote: DataTypes.INTEGER,
       // contestantId: {
@@ -61,22 +60,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      day_added: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      country: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      state: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      continent: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
       payment_gateway: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -90,10 +73,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       converted_amount: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      ip: {
         type: DataTypes.STRING,
         allowNull: true,
       },
