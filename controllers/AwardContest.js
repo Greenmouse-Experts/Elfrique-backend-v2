@@ -505,9 +505,8 @@ exports.createUserVote = async (req, res) => {
           payment_method: method,
           payment_gateway: method,
           payment_status: type,
-          //  ...req.body,
-        awardNomineeId:Nominee.id,
-        awardContestId:Nominee.votingContestId
+          awardNomineeId: Nominee.id,
+          awardContestId: Nominee.awardContestId,
         });
         return res.status(200).send({
           status: true,
