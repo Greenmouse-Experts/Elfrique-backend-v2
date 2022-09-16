@@ -541,14 +541,15 @@ exports.getAllUserVotes = async (req, res) => {
     const userAwards = await awardContest.findAll({
       where: { adminuserId },
       include: [
-        {
-          model: awardNominees,
-          attributes: {
-            exclude: ["createdAt", "updatedAt", "deletedAt"],
-          },
-        },
+        // {
+        //   model: awardNominees,
+        //   attributes: {
+        //     exclude: ["createdAt", "updatedAt", "deletedAt"],
+        //   },
+        // },
         {
           model: awardVote,
+          include: [{ model: awardNominees }],
         },
       ],
       attributes: {

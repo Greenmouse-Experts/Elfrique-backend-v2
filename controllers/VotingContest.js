@@ -668,6 +668,7 @@ exports.getAllUserVotes = async (req, res) => {
         // },
         {
           model: contestVote,
+          include: [{ model: contestant }],
         },
       ],
       attributes: {
