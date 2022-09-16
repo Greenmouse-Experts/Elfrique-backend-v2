@@ -248,6 +248,16 @@ router.get("/allAwards", AwardContestController.findAllAwards);
 
 router.post("/vote/:contestantId", VoteContestController.voteAContestant);
 
+//--------------------vote contestant--------------
+router.post("/userAddContestVote/:contestantId",VoteContestController.createUserVote)
+router.get("/allContestVotes/",Auth,VoteContestController.getAllUserVotes)
+router.get("/allContestVotes/:votingContestId",Auth,VoteContestController.getUserContestVotes)
+router.get("/allContestsVotesAdmin/",Auth,VoteContestController.adminGetAllUserContestsAndVotes)
+router.post("/userAddAwardVote/:nomineeId",AwardContestController.createUserVote)
+router.get("/allAwardVotes/",Auth,AwardContestController.getAllUserVotes)
+router.get("/allAwardVotes/:awardContestId",Auth,AwardContestController.getUserAwardVotes)
+router.get("/allAwardVotesAdmin/:awardContest",Auth,AwardContestController.adminGetAllUserAwardsAndVotes)
+
 //----------------------events routes
 router.post(
   "/createEvent",

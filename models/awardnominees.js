@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "awardCategoriesId",
         as: "Categories",
       });
+      awardNominees.hasMany(models.awardVote);
     }
   }
   awardNominees.init(

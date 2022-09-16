@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       awardContest.hasMany(models.sponsors);
       awardContest.hasMany(models.awardCategories);
       awardContest.hasMany(models.awardNominees);
+      awardContest.hasMany(models.awardVote);
     }
   }
   awardContest.init(

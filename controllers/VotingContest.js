@@ -15,6 +15,7 @@ const sponsors = require("../models").sponsors;
 const contestInfo = require("../models").contestInfo;
 const awardContest = require("../models").awardContest;
 const Transaction = require("../models").transaction;
+const contestVote = require("../models").contestVote;
 const { Service } = require("../service/payment");
 
 const excludeAtrrbutes = { exclude: ["createdAt", "updatedAt", "deletedAt"] };
@@ -545,24 +546,200 @@ exports.voteAContestant = async (req, res) => {
           status: false,
           message: "Transaction Already Exist, cannot continue this operation",
         });
-      }
-      else{
+      } else {
         await Contestant.increment("voteCount", { by: Number(numberOfVote) });
         return res.status(200).send({
           status: true,
           message:
             "Payment Successful and Your Vote has been Successfully Submitted",
-          data: Contestant
+          data: Contestant,
         });
         /* res.status(200).json({
           status: "error",
           message: "Transaction was not successful",
           transaction,
         }); */
-      } 
-    } 
+      }
+    }
   } catch (error) {
     console.log(error);
     return res.status(500).send({ message: "Server Error" });
   }
 };
+
+//------ new-----------
+exports.createUserVote = async (req, res) => {
+  try {
+    const Contestant = await contestant.findOne({
+      where: { id: req.params.contestantId },
+      include: [
+        {
+          model: votingContest,
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+        },
+      ],
+    });
+    if (!Contestant) {
+      return res.status(404).send({
+        message: "Contestant not found",
+      });
+    }
+
+    const { type, method, reference, numberOfVote, amount, fullname } =
+      req.body;
+
+    if (type === "free") {
+      const numVote = 1;
+      await Contestant.increment("voteCount", { by: numVote });
+      await contestVote.create({
+        numberOfVote: numVote,
+        voters_name: fullname,
+        payment_method: "free",
+        payment_gateway: "free",
+        payment_status: "free",
+        ...req.body,
+      });
+      return res.status(200).send({
+        status: true,
+        message: "Your Vote has been Successfully Submitted",
+        data: Contestant,
+      });
+    } else if (type === "paid") {
+      const checktxn = await Transaction.findOne({
+        where: { reference },
+      });
+
+      if (checktxn) {
+        return res.status(400).send({
+          status: false,
+          message: "Transaction Already Exist, cannot continue this operation",
+        });
+      } else {
+        const numVote = numberOfVote;
+        await Contestant.increment("voteCount", { by: numVote });
+        await contestVote.create({
+          numberOfVote: numVote,
+          voters_name: fullname,
+          payment_method: method,
+          payment_gateway: method,
+          payment_status: type,
+          ...req.body,
+        });
+        return res.status(200).send({
+          status: true,
+          message:
+            "Payment Successful and Your Vote has been Successfully Submitted",
+          data: Contestant,
+        });
+        /* res.status(200).json({
+          status: "error",
+          message: "Transaction was not successful",
+          transaction,
+        }); */
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server Error" });
+  }
+};
+exports.getAllUserVotes = async (req, res) => {
+  try {
+    const adminuserId = req.user.id;
+    const user = await User.findOne({
+      where: { id: adminuserId },
+    });
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found",
+      });
+    }
+    const userContests = await votingContest.findAll({
+      where: { adminuserId },
+      include: [
+        {
+          model: contestant,
+          as: "contestants",
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+        },
+        {
+          model: contestVote,
+        },
+      ],
+      attributes: {
+        exclude: ["password", "createdAt", "updatedAt", "deletedAt"],
+      },
+    });
+    return res.status(200).send({
+      userContests,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server Error" });
+  }
+};
+exports.getUserContestVotes = async (req, res) => {
+  try {
+    const adminuserId = req.user.id;
+    const user = await User.findOne({
+      where: { id: adminuserId },
+    });
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found",
+      });
+    }
+    const contestId = req.params.votingContestId;
+    const userContest = await votingContest.findOne({
+      where: { id: contestId },
+    });
+    if (!userContest) {
+      return res.status(404).send({
+        message: "Contest not found",
+      });
+    }
+    const contestVotes = await contestVote.findAll({
+      where: { votingContestId: contestId },
+    });
+    return res.status(200).send({
+      contestVotes,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server Error" });
+  }
+};
+
+exports.adminGetAllUserContestsAndVotes = async (req, res) => {
+  try {
+    const adminuserId = req.user.id;
+    const superadmin = await User.findOne({
+      where: { id: adminuserId },
+    });
+    if (superadmin.role !== "admin") {
+      return res.status(404).send({
+        message: "Only SuperAdmin can access this route",
+      });
+    }
+    // const contestId = req.params.votingContestId;
+    const userContestsWithVotes = await votingContest.findAll({
+      // where: { id: contestId },
+      include: [
+        {
+          model: contestVote,
+        },
+      ],
+    });
+    return res.status(200).send({
+      userContestsWithVotes,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server Error" });
+  }
+};
+

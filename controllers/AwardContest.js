@@ -13,6 +13,7 @@ const votingContest = require("../models").votingcontest;
 const awardContest = require("../models").awardContest;
 const awardCategories = require("../models").awardCategories;
 const awardNominees = require("../models").awardNominees;
+const awardVote = require("../models").awardVote;
 
 const excludeAtrrbutes = { exclude: ["createdAt", "updatedAt", "deletedAt"] };
 
@@ -427,6 +428,189 @@ exports.findAllAwards = async (req, res) => {
     });
     return res.status(200).send({
       awards,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server Error" });
+  }
+};
+
+//-------new---------
+exports.createUserVote = async (req, res) => {
+  try {
+    const Nominee = await awardNominees.findOne({
+      where: { id: req.params.nomineeId },
+      include: [
+        {
+          model: awardContest,
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+        },
+        {
+          model: awardCategories,
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+        },
+      ],
+    });
+    if (!Nominee) {
+      return res.status(404).send({
+        message: "Nominee not found",
+      });
+    }
+
+    const { type, method, reference, numberOfVote, amount, fullname } =
+      req.body;
+
+    if (type === "free") {
+      const numVote = 1;
+      await Nominee.increment("voteCount", { by: numVote });
+      await awardVote.create({
+        numberOfVote: numVote,
+        voters_name: fullname,
+        payment_method: "free",
+        payment_gateway: "free",
+        payment_status: "free",
+        ...req.body,
+      });
+      return res.status(200).send({
+        status: true,
+        message: "Your Vote has been Successfully Submitted",
+        data: Nominee,
+      });
+    } else if (type === "paid") {
+      const checktxn = await Transaction.findOne({
+        where: { reference },
+      });
+
+      if (checktxn) {
+        return res.status(400).send({
+          status: false,
+          message: "Transaction Already Exist, cannot continue this operation",
+        });
+      } else {
+        const numVote = numberOfVote;
+        await Nominee.increment("voteCount", { by: numVote });
+        await awardVote.create({
+          numberOfVote: numVote,
+          voters_name: fullname,
+          payment_method: method,
+          payment_gateway: method,
+          payment_status: type,
+          ...req.body,
+        });
+        return res.status(200).send({
+          status: true,
+          message:
+            "Payment Successful and Your Vote has been Successfully Submitted",
+          data: Nominee,
+        });
+        /* res.status(200).json({
+          status: "error",
+          message: "Transaction was not successful",
+          transaction,
+        }); */
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server Error" });
+  }
+};
+
+exports.getAllUserVotes = async (req, res) => {
+  try {
+    const adminuserId = req.user.id;
+    const user = await User.findOne({
+      where: { id: adminuserId },
+    });
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found",
+      });
+    }
+    const userAwards = await awardContest.findAll({
+      where: { adminuserId },
+      include: [
+        {
+          model: awardNominees,
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+        },
+        {
+          model: awardVote,
+        },
+      ],
+      attributes: {
+        exclude: ["password", "createdAt", "updatedAt", "deletedAt"],
+      },
+    });
+    return res.status(200).send({
+      userAwards,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server Error" });
+  }
+};
+
+exports.getUserAwardVotes = async (req, res) => {
+  try {
+    const adminuserId = req.user.id;
+    const user = await User.findOne({
+      where: { id: adminuserId },
+    });
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found",
+      });
+    }
+    const awardId = req.params.awardContestId;
+    const userAward = await awardContest.findOne({
+      where: { id: awardId },
+    });
+    if (!userContest) {
+      return res.status(404).send({
+        message: "Award contest not found",
+      });
+    }
+    const _awardVotes = await awardVote.findAll({
+      where: { awardContestId: awardId },
+    });
+    return res.status(200).send({
+      _awardVotes,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server Error" });
+  }
+};
+
+exports.adminGetAllUserAwardsAndVotes = async (req, res) => {
+  try {
+    const adminuserId = req.user.id;
+    const superadmin = await User.findOne({
+      where: { id: adminuserId },
+    });
+    if (superadmin.role !== "admin") {
+      return res.status(404).send({
+        message: "Only SuperAdmin can access this route",
+      });
+    }
+    // const contestId = req.params.votingContestId;
+    const userAwardsWithVotes = await awardContest.findAll({
+      // where: { id: contestId },
+      include: [
+        {
+          model: awardVote,
+        },
+      ],
+    });
+    return res.status(200).send({
+      userAwardsWithVotes,
     });
   } catch (error) {
     console.log(error);

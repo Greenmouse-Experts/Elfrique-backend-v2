@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       contestants.belongsTo(models.votingContest);
+      contestants.hasMany(models.contestVote);
     }
   }
   contestants.init(
