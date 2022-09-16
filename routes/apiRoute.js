@@ -264,7 +264,7 @@ router.get("/allContestsVotesAdmin/",Auth,VoteContestController.adminGetAllUserC
 
 //------vote award nominee-----
 router.post("/userAddAwardVote/:nomineeId",AwardContestController.createUserVote)
-router.get("/allAwardVotes/",Auth,AwardContestController.getAllUserVotes)
+router.get("/allUserAwardVotes/", Auth, AwardContestController.getAllUserVotes);
 router.get("/allAwardVotes/:awardContestId",Auth,AwardContestController.getUserAwardVotes)
 router.get("/allAwardVotesAdmin/:awardContest",Auth,AwardContestController.adminGetAllUserAwardsAndVotes)
 

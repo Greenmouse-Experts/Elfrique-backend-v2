@@ -572,14 +572,6 @@ exports.createUserVote = async (req, res) => {
   try {
     const Contestant = await contestant.findOne({
       where: { id: req.params.contestantId },
-      include: [
-        {
-          model: votingContest,
-          attributes: {
-            exclude: ["createdAt", "updatedAt", "deletedAt"],
-          },
-        },
-      ],
     });
     if (!Contestant) {
       return res.status(404).send({
@@ -600,7 +592,9 @@ exports.createUserVote = async (req, res) => {
         payment_method: "free",
         payment_gateway: "free",
         payment_status: "free",
-        amount:0,
+        amount: 0,
+        contestantId: Contestant.id,
+        votingContestId: Contestant.votingContestId,
         // ...req.body,
       });
       return res.status(200).send({
@@ -629,6 +623,8 @@ exports.createUserVote = async (req, res) => {
           payment_method: method,
           payment_gateway: method,
           payment_status: type,
+          contestantId: Contestant.id,
+          votingContestId: Contestant.votingContestId,
           //  ...req.body,
         });
         return res.status(200).send({
@@ -663,13 +659,13 @@ exports.getAllUserVotes = async (req, res) => {
     const userContests = await votingContest.findAll({
       where: { adminuserId },
       include: [
-        {
-          model: contestant,
-          as: "contestants",
-          attributes: {
-            exclude: ["createdAt", "updatedAt", "deletedAt"],
-          },
-        },
+        // {
+        //   model: contestant,
+        //   as: "contestants",
+        //   attributes: {
+        //     exclude: ["createdAt", "updatedAt", "deletedAt"],
+        //   },
+        // },
         {
           model: contestVote,
         },
@@ -678,8 +674,12 @@ exports.getAllUserVotes = async (req, res) => {
         exclude: ["password", "createdAt", "updatedAt", "deletedAt"],
       },
     });
+    const contestVotes = [].concat.apply(
+      [],
+      userContests.map((item) => item.contestVotes)
+    );
     return res.status(200).send({
-      userContests,
+      contestVotes,
     });
   } catch (error) {
     console.log(error);

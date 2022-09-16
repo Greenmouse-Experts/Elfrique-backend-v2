@@ -477,7 +477,8 @@ exports.createUserVote = async (req, res) => {
         payment_gateway: "free",
         payment_status: "free",
         amount: 0,
-        // ...req.body,
+        contestantId:Nominee.id,
+        votingContestId:Nominee.votingContestId
       });
       return res.status(200).send({
         status: true,
@@ -505,6 +506,8 @@ exports.createUserVote = async (req, res) => {
           payment_gateway: method,
           payment_status: type,
           //  ...req.body,
+        contestantId:Nominee.id,
+        votingContestId:Nominee.votingContestId
         });
         return res.status(200).send({
           status: true,
@@ -553,8 +556,12 @@ exports.getAllUserVotes = async (req, res) => {
         exclude: ["password", "createdAt", "updatedAt", "deletedAt"],
       },
     });
+    const awardVotes = [].concat.apply(
+      [],
+      userAwards.map((item) => item.awardVotes)
+    );
     return res.status(200).send({
-      userAwards,
+      awardVotes,
     });
   } catch (error) {
     console.log(error);
