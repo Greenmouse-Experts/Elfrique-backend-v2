@@ -477,8 +477,8 @@ exports.createUserVote = async (req, res) => {
         payment_gateway: "free",
         payment_status: "free",
         amount: 0,
-        contestantId:Nominee.id,
-        votingContestId:Nominee.votingContestId
+        awardNomineeId:Nominee.id,
+        awardContestId:Nominee.votingContestId
       });
       return res.status(200).send({
         status: true,
@@ -506,8 +506,8 @@ exports.createUserVote = async (req, res) => {
           payment_gateway: method,
           payment_status: type,
           //  ...req.body,
-        contestantId:Nominee.id,
-        votingContestId:Nominee.votingContestId
+        awardNomineeId:Nominee.id,
+        awardContestId:Nominee.votingContestId
         });
         return res.status(200).send({
           status: true,
