@@ -14,6 +14,7 @@ const awardContest = require("../models").awardContest;
 const awardCategories = require("../models").awardCategories;
 const awardNominees = require("../models").awardNominees;
 const awardVote = require("../models").awardVote;
+const Transaction = require("../models").transaction;
 
 const excludeAtrrbutes = { exclude: ["createdAt", "updatedAt", "deletedAt"] };
 
@@ -452,6 +453,7 @@ exports.createUserVote = async (req, res) => {
           attributes: {
             exclude: ["createdAt", "updatedAt", "deletedAt"],
           },
+          as: "Categories",
         },
       ],
     });
@@ -474,7 +476,7 @@ exports.createUserVote = async (req, res) => {
         payment_method: "free",
         payment_gateway: "free",
         payment_status: "free",
-        amount:0,
+        amount: 0,
         // ...req.body,
       });
       return res.status(200).send({

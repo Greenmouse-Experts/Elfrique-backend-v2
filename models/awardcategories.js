@@ -11,7 +11,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       awardCategories.belongsTo(models.awardContest);
-      awardCategories.hasMany(models.awardNominees);
+      awardCategories.hasMany(models.awardNominees, {
+        foreignKey: "awardCategoriesId",
+        as: "nominees",
+      });
     }
   }
   awardCategories.init(
