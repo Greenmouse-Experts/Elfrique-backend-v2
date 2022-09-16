@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         autoincrement: false,
         allowNull: false,
         primaryKey: true,
-        defaultValue: () => nanoid,
+        defaultValue: () => nanoid(10),
       },
       // id: {
       //   autoIncrement: true,
@@ -53,20 +53,17 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: 1,
       },
-      paymentMethod: {
+      payment_method: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: "payment_method",
       },
-      paymentStatus: {
+      payment_status: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: "payment_status",
       },
-      dayAdded: {
+      day_added: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: "day_added",
       },
       country: {
         type: DataTypes.STRING,
@@ -80,33 +77,29 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      paymentGateway: {
+      payment_gateway: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: "payment_gateway",
       },
       amount: {
         type: DataTypes.FLOAT,
         allowNull: true,
       },
-      gatewayResponseCode: {
+      gateway_response_code: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: "gateway_response_code",
       },
-      convertedAmount: {
+      converted_amount: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: "converted_amount",
       },
       ip: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      currencyCode: {
+      currency: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: "currency_code",
       },
     },
     {

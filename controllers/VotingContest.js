@@ -619,13 +619,14 @@ exports.createUserVote = async (req, res) => {
       } else {
         const numVote = numberOfVote;
         await Contestant.increment("voteCount", { by: numVote });
+        console.log("boooddy", req.body);
         await contestVote.create({
           numberOfVote: numVote,
           voters_name: fullname,
           payment_method: method,
           payment_gateway: method,
           payment_status: type,
-          ...req.body,
+          // ...req.body,
         });
         return res.status(200).send({
           status: true,
