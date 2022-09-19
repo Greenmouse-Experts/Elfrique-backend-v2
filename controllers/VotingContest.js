@@ -668,7 +668,14 @@ exports.getAllUserVotes = async (req, res) => {
         // },
         {
           model: contestVote,
-          include: [{ model: contestant }],
+          include: [
+            {
+              model: contestant,
+              attributes: {
+                exclude: ["createdAt", "updatedAt", "deletedAt"],
+              },
+            },
+          ],
         },
       ],
       attributes: {
@@ -709,6 +716,14 @@ exports.getUserContestVotes = async (req, res) => {
     }
     const contestVotes = await contestVote.findAll({
       where: { votingContestId: contestId },
+      include: [
+        {
+          model: contestant,
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "deletedAt"],
+          },
+        },
+      ],
     });
     return res.status(200).send({
       contestVotes,

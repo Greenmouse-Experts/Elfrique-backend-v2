@@ -48,12 +48,24 @@ class Wakanow {
       this.password
     ).then((a) => {
       //   console.log(a);
-      return {
-        token: a.access_token,
-        end_seconds: a.expires_in,
-        end_date: new Date(a[".expires"]).getTime(),
-        issue_date: new Date(a[".issued"]).getTime(),
-      };
+      try {
+        return {
+          token: a.access_token,
+          end_seconds: a.expires_in,
+          end_date: new Date(a[".expires"]).getTime(),
+          issue_date: new Date(a[".issued"]).getTime(),
+        };
+      } catch (error) {
+        return error;
+      }
+      {
+        return {
+          token: a.access_token,
+          end_seconds: a.expires_in,
+          end_date: new Date(a[".expires"]).getTime(),
+          issue_date: new Date(a[".issued"]).getTime(),
+        };
+      }
     });
   }
 
