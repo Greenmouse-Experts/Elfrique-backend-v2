@@ -16,6 +16,7 @@ const contestInfo = require("../models").contestInfo;
 const awardContest = require("../models").awardContest;
 const Transaction = require("../models").transaction;
 const Ticket = require("../models").eventsTicket;
+const Booked_eventsticket = require("../models").eventsticket_booked;
 const { Service } = require("../service/payment");
 
 const excludeAtrrbutes = { exclude: ["createdAt", "updatedAt", "deletedAt"] };
@@ -66,37 +67,43 @@ exports.makeTransaction = (req, res) => {
     phone_no: req.body.phone_no,
   };
 
-  let ticketQuantity = req.body.ticketQuantity
-  console.log(ticketQuantity)
+  let ticketQuantity = req.body.ticketQuantity;
+  console.log(ticketQuantity);
 
-
-  if (transaction.category == 'Event Ticket') {
-    ticketQuantity.forEach(
-      (data) => {
-        console.log(data);
-        console.log(res);
-        Ticket.findOne({
-          where: {
-            id: data.id
-          }
-        }).then(res => {
-          /* let quantity = res.quantity
+  if (transaction.category == "Event Ticket") {
+    ticketQuantity.forEach((data) => {
+      console.log(data);
+      console.log(res);
+      Ticket.findOne({
+        where: {
+          id: data.id,
+        },
+      }).then((res) => {
+        /* let quantity = res.quantity
           let newQty = quantity - parseInt(data.quantity) */
-          //console.log(newQty);
-          Ticket.update(
-            {
-              quantity: res.quantity - parseInt(data.quantity),
-              booked: res.booked + parseInt(data.quantity),
-            },
-            { where: { id: data.id } }
-          )
-            .then((result) => console.log("success"))
-            .catch((err) => console.log("error"));
-        });
+        //console.log(newQty);
+        Ticket.update(
+          {
+            quantity: res.quantity - parseInt(data.quantity),
+            booked: res.booked + parseInt(data.quantity),
+          },
+          { where: { id: data.id } }
+        )
+          .then((result) => console.log("success"))
+          .catch((err) => console.log("error"));
 
-
-      })
-
+        Booked_eventsticket.create({
+          ...transaction,
+          name: transaction.payer_name,
+          payment_method: transaction.method,
+          quantity: data.quantity,
+          eventId: data.eventId,
+          eventsTicketId: data.id,
+        })
+          .then((result) => console.log("success"))
+          .catch((err) => console.log("error creating book"));
+      });
+    });
   }
   Transaction.create(transaction)
     .then((data) => {

@@ -10,6 +10,7 @@ const ResetPasswords = require("../models").resetpassword;
 const Profile = require("../models").profile;
 const Event = require("../models").event;
 const Ticket = require("../models").eventsTicket;
+const Booked_tickets = require("../models").eventsticket_booked;
 const votingContest = require("../models").votingcontest;
 const awardContest = require("../models").awardContest;
 const awardCategories = require("../models").awardCategories;
@@ -94,6 +95,96 @@ exports.getAllTicketsById = async (req, res) => {
     });
     return res.status(200).send({
       tickets,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server Error" });
+  }
+};
+
+exports.getAllUserBookedTickets = async (req, res) => {
+  try {
+    const adminuserId = req.user.id;
+    const user = await User.findOne({
+      where: { id: adminuserId },
+    });
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found",
+      });
+    }
+
+    // const booked_tickets = await Booked_tickets.findAll({
+    //   where: {
+    //     eventId: req.params.id,
+    //   },
+    // });
+    const user_events = await Event.findAll({
+      where: {
+        adminuserId,
+      },
+      include: [{ model: Booked_tickets }],
+    });
+    const booked_tickets = [].concat.apply(
+      [],
+      user_events.map((item) => item.eventsticket_booked)
+    );
+    return res.status(200).send({
+      booked_tickets,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server Error" });
+  }
+};
+exports.getUserBookedTicketsById = async (req, res) => {
+  try {
+    const adminuserId = req.user.id;
+    const user = await User.findOne({
+      where: { id: adminuserId },
+    });
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found",
+      });
+    }
+    const eventId = req.params.eventId;
+    const userEvent = await Event.findOne({
+      where: { id: eventId },
+    });
+    if (!userEvent) {
+      return res.status(404).send({
+        message: "Event not found",
+      });
+    }
+    const booked_tickets = await Booked_tickets.findAll({
+      where: {
+        eventId,
+      },
+    });
+    return res.status(200).send({
+      booked_tickets,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: "Server Error" });
+  }
+};
+exports.getAllBookedTicketsAdmin = async (req, res) => {
+  try {
+    const adminuserId = req.user.id;
+    const superadmin = await User.findOne({
+      where: { id: adminuserId },
+    });
+    if (superadmin.role !== "admin") {
+      return res.status(404).send({
+        message: "Only SuperAdmin can access this route",
+      });
+    }
+
+    const booked_tickets = await Booked_tickets.findAll({});
+    return res.status(200).send({
+      booked_tickets,
     });
   } catch (error) {
     console.log(error);

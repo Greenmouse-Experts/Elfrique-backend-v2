@@ -318,7 +318,8 @@ router.delete(
   Auth,
   EventController.deleteEventReferral
 );
-
+//==========tickets===
+//Book ticket is handled in makeTransaction in TransactionController
 router.post(
   "/createTickets/:id",
   Auth,
@@ -327,6 +328,9 @@ router.post(
   TicketController.createTickets
 );
 router.get("/getAllTickets/:id", Auth, TicketController.getAllTicketsById);
+router.get("/allUserBookedTickets/", Auth, TicketController.getAllUserBookedTickets);
+router.get("/allUserBookedTickets/:eventId", Auth, TicketController.getUserBookedTicketsById);
+router.get("/allBookedTicketsAdmin/", Auth, TicketController.getAllBookedTicketsAdmin);
 
 router.get("/allEvents", EventController.findAllEvents);
 

@@ -23,6 +23,7 @@ const {
   transaction,
   contestVote,
   awardVote,
+  eventsticket_booked,
 
   payout,
   triviaplayer,
@@ -62,6 +63,7 @@ module.exports = async (req, res) => {
   transaction.sync({ alter: true });
   contestVote.sync({ alter: true });
   awardVote.sync({ alter: true });
+  eventsticket_booked.sync({ alter: true });
 
   console.log("Added models");
 };

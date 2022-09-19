@@ -2,7 +2,7 @@
 const { Model } = require("sequelize");
 const { nanoid } = require("nanoid");
 module.exports = (sequelize, DataTypes) => {
-  class eventsTicket extends Model {
+  class eventsticket_booked extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      eventsTicket.belongsTo(models.event);
-      eventsTicket.hasMany(models.eventsticket_booked);
+      eventsticket_booked.belongsTo(models.event);
+      eventsticket_booked.belongsTo(models.eventsTicket);
     }
   }
-  eventsTicket.init(
+  eventsticket_booked.init(
     {
       id: {
         type: DataTypes.STRING(10),
@@ -24,21 +24,18 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: () => nanoid(10),
       },
       name: DataTypes.STRING,
-      quantity: DataTypes.STRING,
-      price: DataTypes.STRING,
-      salesstart: DataTypes.DATE,
-      salesend: DataTypes.DATE,
-      eventname: DataTypes.STRING,
-      booked: DataTypes.STRING,
-      status: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: 1,
-      },
+      email: DataTypes.STRING,
+      phone_no: DataTypes.STRING,
+      reference: DataTypes.STRING,
+      payment_method: DataTypes.STRING,
+      currency: DataTypes.STRING,
+      quantity: DataTypes.INTEGER,
+      amount: DataTypes.STRING,
     },
     {
       sequelize,
-      modelName: "eventsTicket",
+      modelName: "eventsticket_booked",
     }
   );
-  return eventsTicket;
+  return eventsticket_booked;
 };
