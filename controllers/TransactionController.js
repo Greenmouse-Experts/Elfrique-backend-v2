@@ -84,15 +84,14 @@ exports.makeTransaction = (req, res) => {
           let newQty = quantity - parseInt(data.quantity) */
           //console.log(newQty);
           Ticket.update(
-            { quantity: res.quantity - parseInt(data.quantity) },
+            {
+              quantity: res.quantity - parseInt(data.quantity),
+              booked: res.booked + parseInt(data.quantity),
+            },
             { where: { id: data.id } }
           )
-            .then(result =>
-              console.log('success')
-            )
-            .catch(err =>
-              console.log('error')
-            )
+            .then((result) => console.log("success"))
+            .catch((err) => console.log("error"));
         });
 
 
