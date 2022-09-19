@@ -131,7 +131,7 @@ exports.getAllUserBookedTickets = async (req, res) => {
     );
     return res.status(200).send({
       booked_tickets,
-      user_events,
+      // user_events,
     });
   } catch (error) {
     console.log(error);
