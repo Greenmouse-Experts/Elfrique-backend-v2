@@ -286,7 +286,7 @@ router.post(
   EventController.createEvents
 );
 
-router.get("/getAllEvents", Auth, EventController.getAllUserEvents);
+router.get("/getAllUserEvents", Auth, EventController.getAllUserEvents);
 
 router.get("/getSingleEvent/:id", EventController.getSingleEvent);
 
@@ -328,9 +328,21 @@ router.post(
   TicketController.createTickets
 );
 router.get("/getAllTickets/:id", Auth, TicketController.getAllTicketsById);
-router.get("/allUserBookedTickets/", Auth, TicketController.getAllUserBookedTickets);
-router.get("/allUserBookedTickets/:eventId", Auth, TicketController.getUserBookedTicketsById);
-router.get("/allBookedTicketsAdmin/", Auth, TicketController.getAllBookedTicketsAdmin);
+router.get(
+  "/allUserBookedTickets/",
+  Auth,
+  TicketController.getAllUserBookedTickets
+);
+router.get(
+  "/allUserBookedTickets/:eventId",
+  Auth,
+  TicketController.getUserBookedTicketsById
+);
+router.get(
+  "/allBookedTicketsAdmin/",
+  Auth,
+  TicketController.getAllBookedTicketsAdmin
+);
 
 router.get("/allEvents", EventController.findAllEvents);
 
@@ -431,7 +443,7 @@ router.get("/getAllUsers", Auth, SuperAdminController.getAllUsers);
 
 router.get("/getAllContests", Auth, SuperAdminController.getAllContest);
 
-router.get("/getAllEventsAdmin", Auth, SuperAdminController.getAllEvents);
+router.get("/getAllEvents", Auth, SuperAdminController.getAllEvents);
 
 router.get("/getAllRef", Auth, ReferralController.getUserReferrals);
 
