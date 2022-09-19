@@ -74,7 +74,7 @@ exports.makeTransaction = (req, res) => {
     ticketQuantity.forEach((data) => {
       console.log(data);
       console.log(res);
-      Ticket.findOne({
+      const _ticket = Ticket.findOne({
         where: {
           id: data.id,
         },
@@ -82,22 +82,23 @@ exports.makeTransaction = (req, res) => {
         /* let quantity = res.quantity
           let newQty = quantity - parseInt(data.quantity) */
         //console.log(newQty);
-        Ticket.update(
-          {
-            quantity: res.quantity - parseInt(data.quantity),
-            booked: res.booked + parseInt(data.quantity),
-          },
-          { where: { id: data.id } }
-        )
+        res
+          .update(
+            {
+              quantity: res.quantity - parseInt(data.quantity),
+              booked: res.booked + parseInt(data.quantity),
+            },
+            { where: { id: data.id } }
+          )
           .then((result) => console.log("success"))
           .catch((err) => console.log("error"));
-
+        console.log("ticket eventidd", res.eventId);
         Booked_eventsticket.create({
           ...transaction,
           name: transaction.payer_name,
           payment_method: transaction.method,
           quantity: data.quantity,
-          eventId: Ticket.eventId,
+          eventId: res.eventId,
           eventsTicketId: data.id,
         })
           .then((result) => console.log("success"))
