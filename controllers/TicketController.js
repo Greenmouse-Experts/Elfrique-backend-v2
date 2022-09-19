@@ -127,10 +127,11 @@ exports.getAllUserBookedTickets = async (req, res) => {
     });
     const booked_tickets = [].concat.apply(
       [],
-      user_events.map((item) => item.eventsticket_booked)
+      user_events.map((item) => item.eventsticket_bookeds)
     );
     return res.status(200).send({
       booked_tickets,
+      // user_events,
     });
   } catch (error) {
     console.log(error);

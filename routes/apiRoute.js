@@ -328,6 +328,7 @@ router.post(
   TicketController.createTickets
 );
 router.get("/getAllTickets/:id", Auth, TicketController.getAllTicketsById);
+
 router.get(
   "/allUserBookedTickets/",
   Auth,
