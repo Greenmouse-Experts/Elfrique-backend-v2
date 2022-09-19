@@ -97,7 +97,7 @@ exports.makeTransaction = (req, res) => {
           name: transaction.payer_name,
           payment_method: transaction.method,
           quantity: data.quantity,
-          eventId: data.eventId,
+          eventId: Ticket.eventId,
           eventsTicketId: data.id,
         })
           .then((result) => console.log("success"))
