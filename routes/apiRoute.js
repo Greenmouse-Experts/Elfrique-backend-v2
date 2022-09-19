@@ -286,7 +286,7 @@ router.post(
   EventController.createEvents
 );
 
-router.get("/getAllUserEvents", Auth, EventController.getAllUserEvents);
+router.get("/getAllEvents", Auth, EventController.getAllUserEvents);
 
 router.get("/getSingleEvent/:id", EventController.getSingleEvent);
 
@@ -427,7 +427,7 @@ router.get("/getAllUsers", Auth, SuperAdminController.getAllUsers);
 
 router.get("/getAllContests", Auth, SuperAdminController.getAllContest);
 
-router.get("/getAllEvents", Auth, SuperAdminController.getAllEvents);
+router.get("/getAllEventsAdmin", Auth, SuperAdminController.getAllEvents);
 
 router.get("/getAllRef", Auth, ReferralController.getUserReferrals);
 
