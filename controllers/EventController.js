@@ -415,7 +415,7 @@ exports.getAllJob = async (req, res, next) => {
 };
 
 exports.getAllJobSeller = async (req, res, next) => {
-  console.log("userrrr\n\n", req.user);
+  // console.log("userrrr\n\n", req.user);
   try {
     const _adminuserId = req.user.id;
     const user = await User.findOne({

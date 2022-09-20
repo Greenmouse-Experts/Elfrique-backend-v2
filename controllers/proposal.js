@@ -183,7 +183,7 @@ exports.updateProposal = async (req, res, next) => {
     await Proposal.findOne({
       where: {
         userId: req.user.id,
-        jobId: req.params.jobId,
+        id: req.params.id,
       },
     }).then(async (proposal) => {
       if (proposal) {
@@ -264,7 +264,7 @@ exports.deleteProposal = async (req, res, next) => {
   try {
     await Proposal.destroy({
       where: {
-        jobId: req.params.jobId,
+        id: req.params.id,
         userId: req.user.id,
       },
     }).then((proposal) =>

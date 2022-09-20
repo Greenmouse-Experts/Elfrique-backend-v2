@@ -569,9 +569,9 @@ router.get("/getProposalbyseller/:jobId/:userId", Auth, getProposalSeller);
 
 router.get("/getAllProposal/:jobId", Auth, getAllProposal);
 
-router.patch("/updateProposal/:jobId", Auth, updateProposal);
+router.patch("/updateProposal/:id", Auth, updateProposal);
 
-router.delete("/deleteProposal/:jobId", Auth, deleteProposal);
+router.delete("/deleteProposal/:id", Auth, deleteProposal);
 
 //-----------------------------------------------------Short Url--------------------------------------------------
 
