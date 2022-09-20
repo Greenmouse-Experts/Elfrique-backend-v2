@@ -262,12 +262,13 @@ exports.updateProposal = async (req, res, next) => {
 
 exports.deleteProposal = async (req, res, next) => {
   try {
-    await Proposal.destroy({
+    const _proposal = await Proposal.findOne({
       where: {
         id: req.params.id,
-        userId: req.user.id,
+        // userId: req.user.id,
       },
-    }).then((proposal) =>
+    });
+    _proposal.destroy().then((proposal) =>
       res.status(200).json({
         status: true,
         message: "Bid Deleted Successfully",
